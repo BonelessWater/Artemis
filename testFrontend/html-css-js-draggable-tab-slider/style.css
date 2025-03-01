@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+*{
+    font-family: "Ubuntu Mono", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+strong, b {
+    font-weight: 700;
+}
+
+html, body{
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    padding: unset;
+    margin: unset;
+    box-sizing: border-box;
+}
+
+body{
+    display: flex;
+    flex-flow:column;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+}
+
+#main-wrapper{
+    width: 100%;
+    max-width: 700px;
+}
+#page-title{
+    text-align: center;
+    color: #fff;
+    text-shadow: 0px 3px 5px #2c2c2c;
+    margin-bottom: 30px;
+}
+
+/* Slider Tab Container */
+#slider-tab{
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    background-color: #fff;
+    box-shadow: 0px 3px 5px #3e3e3e;
+    border-radius: 50px;
+    padding: 0 15px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+/* Scroll or Slide Buttons */
+button.slider-tab-nav-btn {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50px;
+    border: unset;
+    cursor: pointer;
+    user-select: none;
+}
+/* Left Scroll or Slide Button */
+button#slider-tab-left-btn {
+    left: 0;
+    background: linear-gradient(90deg, #ffffff 50%, transparent);
+    text-align: start;
+    transition: all .2s ease-in-out;
+    padding-left: 10px;
+}
+button#slider-tab-left-btn:hover {
+    background: linear-gradient(90deg, #e5e5e5 50%, transparent);
+}
+/* Right Scroll or Slide Button */
+button#slider-tab-right-btn {
+    right: 0;
+    background: linear-gradient(270deg, #ffffff 50%, transparent);
+    text-align: end;
+    padding-right: 10px;
+}
+button#slider-tab-right-btn:hover {
+    background: linear-gradient(270deg, #e5e5e5 50%, transparent);
+}
+/* Slider Tab List Container */
+ul#slider-list{
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    padding: 10px 28px;
+    margin: unset;
+    cursor: e-resize;
+    scroll-behavior: smooth;
+}
+
+/* Slider Tab List Items */
+ul#slider-list > li.slider-item{
+    list-style: none;
+    margin: 3px 10px;
+    padding: 5px 14px;
+    border-radius: 100px;
+    color: #4a4a4a;
+    background-color: #649B53;
+    border-color: #000000;
+    box-shadow: 2px 3px 3px #cacaca7a;
+    cursor: pointer;
+    font-family: "Yusei Magic";
+    font-size: 2em;
+    user-select: none;
+}
+ul#slider-list > li.slider-item-1{
+    list-style: none;
+    margin: 3px 8px;
+    font-family: "Yusei Magic";
+    padding: 5px 15px;
+    border-radius: 10px;
+    color: #4a4a4a;
+    border-color: #f3f3f37a;
+    font-size: 2em;
+    cursor: pointer;
+    user-select: none;
+}
+/* Slider Tab List Items when hovered*/
+ul#slider-list > li.slider-item:hover{
+    color: #f4f3f3 !important;
+    background-color: #ea3515 !important;
+    border-color: #639cff !important;
+    box-shadow: 1px 2px 3px #00000045 !important;
+}
+
+/* Slider Tab List Items is active*/
+li.slider-item.active {
+    color: #f4f3f3 !important;
+    background-color: #1a6af5 !important;
+    border-color: #1a6af5 !important;
+    box-shadow: 1px 2px 3px #0000009e !important;
+}
