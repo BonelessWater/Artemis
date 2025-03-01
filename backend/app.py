@@ -5,10 +5,14 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 
+# Helper classes
+from LLM_API import Model
+from Locator import get_loc
+
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="../frontend")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SECRET_KEY'] = API_KEY
 
@@ -16,6 +20,7 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
@@ -70,7 +75,8 @@ def logout():
 
 @app.route('/')
 def home():
-    return "Hello, Flask!"
+
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
