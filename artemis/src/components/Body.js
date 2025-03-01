@@ -27,11 +27,6 @@ const Body = () => {
             FAQ
           </button>
         </div>
-        <div className="col s12">
-          <button className="btn-large" style={buttonStyle}>
-            SOS
-          </button>
-        </div>
       </div>
     </div>
   );

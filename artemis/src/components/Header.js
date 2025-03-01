@@ -31,7 +31,7 @@ const Header = () => {
               menu
             </i>
           </a>
-          {/* Centered logo using Artemis logo from the public folder */}
+          {/* Centered logo */}
           <a href="#!" className="brand-logo center">
             <img
               src={`${process.env.PUBLIC_URL}/artemis_logo-transparent-white.png`}
@@ -60,7 +60,29 @@ const Header = () => {
         <li><a href="#!">Home</a></li>
         <li><a href="#!">Settings</a></li>
         <li><a href="#!">Help</a></li>
+        {/* SOS Button with sliding animation */}
+        <li>
+          <button 
+            className="btn sos-btn" 
+            style={{ width: '100%', marginTop: '20px' }}
+          >
+            SOS
+          </button>
+        </li>
       </ul>
+
+      {/* Inline CSS for the sliding animation */}
+      <style>
+        {`
+          @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+          }
+          .sos-btn {
+            animation: slideIn 0.5s ease-out;
+          }
+        `}
+      </style>
     </>
   );
 };
