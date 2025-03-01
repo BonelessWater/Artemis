@@ -1,0 +1,6 @@
+flask
+flask-cors
+torch
+transformer
+openai
+dotenv
