@@ -1,9 +1,10 @@
 import os
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 # Helper classes
 from LLM_API import Model
@@ -13,7 +14,9 @@ load_dotenv()
 API_KEY = os.getenv("API_KEY")
 
 app = Flask(__name__, template_folder="../frontend")
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+CORS(app)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///backend/users.db'
 app.config['SECRET_KEY'] = API_KEY
 
 db = SQLAlchemy(app)
@@ -26,15 +29,24 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)  # Make sure this line exists!
 
-    friends = db.relationship('User', secondary='friendship', backrefs='users', lazy='dynamic')
+    friends = db.relationship('User', secondary='friendship', backref='users', lazy='dynamic')
        
 friendship = db.Table('friendship',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id', primary_key=True)),
     db.Column('friend_id', db.Integer, db.ForeignKey('user.id', primary_key=True))
 )
 
-with app.app_context():
-    db.create_all()
+def create_db():
+    db_path = os.path.join(app.instance_path, 'users.db')
+    if not os.path.exists(db_path):
+        with app.app_context():
+            db.create_all()
+
+create_db()
+
+@app.route('/api/data', methods=['GET'])
+def get_data():
+    return jsonify({"message": "Hello from Flask!", "users": ["Alice", "Bob", "Charlie"]})
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -97,9 +109,5 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route('/')
-def home():
-    return render_template('index.html')
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
