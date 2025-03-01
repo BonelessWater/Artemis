@@ -43,8 +43,7 @@ def connect(prompt, wifi=True):
         model.to(device)
 
         # Prepare an input prompt
-        input_text = "Hello, how are you?"
-        inputs = tokenizer(input_text, return_tensors="pt").to(device)
+        inputs = tokenizer(prompt, return_tensors="pt").to(device)
 
         # Generate output from the model
         outputs = model.generate(**inputs, max_length=50)
@@ -54,4 +53,7 @@ def connect(prompt, wifi=True):
 
 if __name__ == "__main__":
     prompt = "Hello"
-    print(connect(prompt=prompt, wifi=True))
+    
+    answer = connect(prompt=prompt, wifi=True)
+
+    print(answer)
