@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Friends</title>
+</head>
+<body>
+    <h1>Your Friends</h1>
+
+    <h2>Friend List:</h2>
+    <ul>
+        {% for friend in friends %}
+            <li>{{ friend.username }}</li>
+        {% else %}
+            <li>No friends yet!</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Add a Friend:</h2>
+    <form method="POST">
+        <label for="friend_username">Enter Username:</label>
+        <input type="text" id="friend_username" name="friend_username" required>
+        <button type="submit">Add Friend</button>
+    </form>
+
+    <br>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

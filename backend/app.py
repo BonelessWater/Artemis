@@ -26,6 +26,13 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)  # Make sure this line exists!
 
+    friends = db.relationship('User', secondary='friendship', backrefs='users', lazy='dynamic')
+       
+friendship = db.Table('friendship',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id', primary_key=True)),
+    db.Column('friend_id', db.Integer, db.ForeignKey('user.id', primary_key=True))
+)
+
 with app.app_context():
     db.create_all()
 
@@ -62,6 +69,23 @@ def login():
         return "Invalid credentials :("
     return render_template('login.html')
 
+@app.route('/friends', methods=['GET', 'POST'])
+@login_required
+def friends():
+    if request.method == 'POST':
+        friend_username = request.form['friend_username']
+        friend = User.query.filter_by(username=friend_username).first()
+
+        if friend and friend != current_user:
+            current_user.friends.append(friend)
+            db.session.commit()
+            return redirect(url_for('friends'))
+        else:
+            return "Don't add yourself as a friend, that's lonely."
+
+    friends_list = current_user.friends.all()
+    return render_template('friends.html', friends=friends_list)
+
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -75,7 +99,6 @@ def logout():
 
 @app.route('/')
 def home():
-
     return render_template('index.html')
 
 if __name__ == '__main__':
