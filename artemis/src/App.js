@@ -20,7 +20,7 @@ const App = () => (
       <TutorialPopup />
       <div
         style={{
-          backgroundImage: `url(${process.env.PUBLIC_URL + "/images/pixelated-background2.png"})`,
+          backgroundImage: `url(${process.env.PUBLIC_URL + "/images/menu/pixelated-background.png"})`,
           backgroundPosition: "center top",
           backgroundRepeat: "repeat-y",
           backgroundSize: "auto",

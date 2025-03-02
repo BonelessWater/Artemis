@@ -85,7 +85,7 @@ const Achievements = () => {
           }}
         >
           <img
-            src="/images/tree.png"
+            src="/images/achievements/tree.png"
             alt="Tree Achievement"
             style={{
               width: "80px",
@@ -100,7 +100,7 @@ const Achievements = () => {
         {/* Arrow between Root and Level 1 */}
         <div style={{ marginTop: "40px", textAlign: "center" }}>
           <img
-            src="/images/arrow_down.png"
+            src="/images/achievements/arrow_down.png"
             alt="Arrow"
             style={{ width: "50px", height: "auto" }}
           />
@@ -129,7 +129,7 @@ const Achievements = () => {
             }}
           >
             <img
-              src="/images/fire.png"
+              src="/images/achievements/fire.png"
               alt="Fire Achievement"
               style={{ 
                 width: "80px", 
@@ -151,7 +151,7 @@ const Achievements = () => {
             }}
           >
             <img
-              src="/images/fish.png"
+              src="/images/achievements/fish.png"
               alt="Fish Achievement"
               style={{ 
                 width: "80px", 
@@ -166,7 +166,7 @@ const Achievements = () => {
         {/* Arrow between Level 1 and Level 2 */}
         <div style={{ marginTop: "60px", textAlign: "center" }}>
           <img
-            src="/images/arrow_down.png"
+            src="/images/achievements/arrow_down.png"
             alt="Arrow"
             style={{ width: "50px", height: "auto" }}
           />
@@ -195,7 +195,7 @@ const Achievements = () => {
             }}
           >
             <img
-              src="/images/shit.png"
+              src="/images/achievements/shit.png"
               alt="Shit Achievement"
               style={{ 
                 width: "80px", 
@@ -219,7 +219,7 @@ const Achievements = () => {
             }}
           >
             <img
-              src="/images/water.png"
+              src="/images/achievements/water.png"
               alt="Water Achievement"
               style={{ 
                 width: "80px", 

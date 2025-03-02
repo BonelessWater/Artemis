@@ -98,16 +98,6 @@ const Sidebar = ({ onClose }) => {
           Lifetime ArtemisPoints: 5678
         </li>
         <li style={{ marginBottom: '10px' }}>
-          <Link to="/news" onClick={onClose} style={{ color: 'rgb(83, 211, 147)' }}>
-            News
-          </Link>
-        </li>
-        <li style={{ marginBottom: '10px' }}>
-          <Link to="/explore" onClick={onClose} style={{ color: 'rgb(83, 211, 147)' }}>
-            Explore
-          </Link>
-        </li>
-        <li style={{ marginBottom: '10px' }}>
           <Link to="/rate-us" onClick={onClose} style={{ color: 'rgb(83, 211, 147)' }}>
             Rate Us
           </Link>
@@ -127,16 +117,8 @@ const Sidebar = ({ onClose }) => {
             Feedback
           </Link>
         </li>
-        {/* New Get Started button */}
-        <li style={{ marginBottom: '10px' }}>
-          <div>
-            <CartoonyButton onClick={() => { startTutorial(); onClose(); }}>
-              Get Started
-            </CartoonyButton>
-          </div>
-        </li>
         {/* Track Location switch at the bottom */}
-        <li style={{ marginTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <li style={{ marginTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <span style={{ color: 'rgb(83, 211, 147)' }}>Track Location</span>
           <div className="switch">
             <label>
@@ -149,6 +131,14 @@ const Sidebar = ({ onClose }) => {
               <span className="lever"></span>
               On
             </label>
+          </div>
+        </li>
+        {/* New Get Started button */}
+        <li style={{ marginTop: '10px' }}>
+          <div>
+            <CartoonyButton onClick={() => { startTutorial(); onClose(); }}>
+              Get Started
+            </CartoonyButton>
           </div>
         </li>
       </ul>

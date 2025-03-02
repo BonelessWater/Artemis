@@ -346,7 +346,7 @@ const Body = () => {
               onClick={() => setSidebarOpen(true)}
             >
               <img
-                src="/images/menu.png"
+                src="/images/menu/menu.png"
                 alt="Menu"
                 style={{
                   position: 'relative',
@@ -362,7 +362,7 @@ const Body = () => {
               onClick={handlePersonClick}
             >
               <img
-                src="/images/person.png"
+                src="/images/menu/person.png"
                 alt="Person"
                 style={{
                   position: 'relative',
@@ -390,7 +390,7 @@ const Body = () => {
             <CartoonyButton to="/prep" color="rgb(83, 211, 147)" size="large" width="100%">
               Prep
               <img
-                src="/images/star-white.png"
+                src="/images/menu/star-white.png"
                 alt="Icon"
                 style={{
                   position: 'absolute',
@@ -406,7 +406,7 @@ const Body = () => {
             <CartoonyButton to="/help" color="rgb(83, 211, 147)" size="large" width="100%">
               Help
               <img
-                src="/images/star-white.png"
+                src="/images/menu/star-white.png"
                 alt="Icon"
                 style={{
                   position: 'absolute',
@@ -427,7 +427,7 @@ const Body = () => {
             >
               SOS
               <img
-                src="/images/star-white.png"
+                src="/images/menu/star-white.png"
                 alt="Icon"
                 style={{
                   position: 'absolute',
@@ -447,7 +447,7 @@ const Body = () => {
           <div style={{ marginBottom: '20px' }}>
             <Link to="/achieve">
               <img
-                src={process.env.PUBLIC_URL + "/images/trophy.webp"}
+                src={process.env.PUBLIC_URL + "/images/menu/trophy.webp"}
                 alt="Trophy"
                 style={{
                   display: 'block',
@@ -470,7 +470,7 @@ const Body = () => {
             >
               Bounty
               <img
-                src="/images/star-white.png"
+                src="/images/menu/star-white.png"
                 alt="Icon"
                 style={{
                   position: 'absolute',

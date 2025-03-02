@@ -39,13 +39,13 @@ const tasks = [
 const getImageSrc = (requirement) => {
   const req = requirement.toLowerCase();
   if (req.includes("water"))
-    return process.env.PUBLIC_URL + "/images/water_sample.webp";
+    return process.env.PUBLIC_URL + "/images/bounty/water_sample.webp";
   if (req.includes("soil"))
-    return process.env.PUBLIC_URL + "/images/soil_sample.png";
+    return process.env.PUBLIC_URL + "/images/bounty/soil_sample.png";
   if (req.includes("plant") || req.includes("leaf"))
-    return process.env.PUBLIC_URL + "/images/plant_sample.png";
+    return process.env.PUBLIC_URL + "/images/bounty/plant_sample.png";
   // Fallback image if none of the keywords are found
-  return process.env.PUBLIC_URL + "/images/default_sample.webp";
+  return process.env.PUBLIC_URL + "/images/bounty/default_sample.webp";
 };
 
 const ResearchPage = () => {
