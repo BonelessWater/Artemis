@@ -272,43 +272,8 @@ const Body = () => {
         </div>
       </div>
 
-      <div className="container center-align" style={{ marginTop: '30px' }}>
-        {/* Trophy Image Above the Buttons */}
-        <div style={{ marginBottom: '20px' }}>
-          <Link to="/achieve">
-            <img
-              src={process.env.PUBLIC_URL + "/images/trophy.webp"}
-              alt="Trophy"
-              style={{ 
-                display: 'block', 
-                margin: '0 auto', 
-                maxWidth: '250px',
-                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.5)'
-              }}
-            />
-          </Link>
-        </div>
-
-        {/* Bounty Button using CartoonyButton */}
-        <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-          <CartoonyButton to="/research" color="rgb(239, 221, 121)" size="large" width="auto">
-            Bounty
-            <img
-              src="/images/star-white.png"
-              alt="Icon"
-              style={{
-                position: 'absolute',
-                top: '-3px',
-                right: '-3px',
-                width: '20px',
-                height: '20px'
-              }}
-            />
-          </CartoonyButton>
-        </div>
-        
-        {/* Three buttons next to each other */}
-        <div className="row" style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+      {/* Three buttons next to each other */}
+      <div className="row" style={{ marginTop: '35px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
         <div className="col s4">
           <CartoonyButton to="/prep" color="rgb(83, 211, 147)" size="large" width="100%">
             Prep
@@ -364,7 +329,41 @@ const Body = () => {
         </div>
       </div>
 
+      <div className="container center-align" style={{ marginTop: '30px' }}>
+        {/* Trophy Image Above the Buttons */}
+        <div style={{ marginBottom: '20px' }}>
+          <Link to="/achieve">
+            <img
+              src={process.env.PUBLIC_URL + "/images/trophy.webp"}
+              alt="Trophy"
+              style={{ 
+                display: 'block', 
+                margin: '0 auto', 
+                maxWidth: '250px',
+                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.5)'
+              }}
+            />
+          </Link>
+        </div>
 
+        {/* Bounty Button using CartoonyButton */}
+        <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+          <CartoonyButton to="/research" color="rgb(239, 221, 121)" size="large" width="auto">
+            Bounty
+            <img
+              src="/images/star-white.png"
+              alt="Icon"
+              style={{
+                position: 'absolute',
+                top: '-3px',
+                right: '-3px',
+                width: '20px',
+                height: '20px'
+              }}
+            />
+          </CartoonyButton>
+        </div>
+      
         {/* Conditionally render the SOS confirmation card */}
         {showSosCard && (
           <DraggableCard onClose={() => setShowSosCard(false)}>
