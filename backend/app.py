@@ -63,6 +63,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.String(300), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
+    points = db.Column(db.Integer, default=0)
 
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
@@ -130,6 +131,18 @@ def friendlist():
         friends_list = current_user.friends.all()
         friends_json = [{"name": friend.username} for friend in friends_list]
         return friends_json
+
+@app.route('/api/leaderboard', methods=['GET'])
+def leaderboard():
+    users = User.query.order_by(User.points.desc()).all()
+    leaderboard = []
+    for idx, user in enumerate(users):
+        leaderboard.append({
+            'rank': idx + 1,
+            'name': user.username,
+            'score': user.points
+        })
+    return jsonify(leaderboard)
 
 @app.route('/register', methods=['POST'])
 def register():
