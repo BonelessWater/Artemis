@@ -9,17 +9,23 @@ import DraggableCard from '../components/DraggableCard';
 /* ====================================================================
    Dummy Leaderboard Data and Leaderboard Component
    ==================================================================== */
-const dummyLeaderboard = [
-  { rank: 1, name: 'Zara', score: 3420 },
-  { rank: 2, name: 'Liam', score: 2980 },
-  { rank: 3, name: 'Mia', score: 2750 },
-  { rank: 4, name: 'Noah', score: 2600 },
-  { rank: 5, name: 'Emma', score: 2500 }
-];
-
-
 
 const Leaderboard = () => {
+  const [leaderboard, setLeaderboard] = useState([]);
+
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        const response = await fetch('/api/leaderboard');
+        const data = await response.json();
+        setLeaderboard(data);
+      } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+      }
+    };
+    fetchLeaderboard();
+  }, [])
+
   return (
     <div style={{
       backgroundColor: 'rgb(83, 211, 147)',
@@ -47,7 +53,7 @@ const Leaderboard = () => {
           </tr>
         </thead>
         <tbody>
-          {dummyLeaderboard.map((entry) => (
+          {leaderboard.map((entry) => (
             <tr key={entry.rank} style={{ borderBottom: '1px solid #ddd' }}>
               <td style={{ textAlign: 'left', padding: '5px', color: 'white' }}>#{entry.rank}</td>
               <td style={{ textAlign: 'left', padding: '5px', color: 'white' }}>{entry.name}</td>
