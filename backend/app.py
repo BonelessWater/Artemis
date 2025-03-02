@@ -125,9 +125,7 @@ def LLM_Chat():
     prompt = request.args.get("prompt")
     model = Model(wifi=True)
     answer = model.reply(prompt)
-    print("\nFinal Answer:\n")
-    print(answer)
-    return jsonify(answer=answer)
+    return jsonify(answer)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
