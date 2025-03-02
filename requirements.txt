@@ -4,7 +4,6 @@ flask_sqlalchemy
 flask_login
 dotenv
 torch
-transformer
 openai
 plyer
 geocoder

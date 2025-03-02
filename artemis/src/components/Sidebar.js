@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import CartoonyButton from '../components/CartoonyButton';
 import 'materialize-css/dist/css/materialize.min.css'; // Ensure Materialize CSS is imported
+import { useTutorial } from '../tutorial/TutorialContext';
 
 const Sidebar = ({ onClose }) => {
   const sidebarRef = useRef(null);
@@ -56,6 +57,8 @@ const Sidebar = ({ onClose }) => {
     }
   };
 
+  const { startTutorial } = useTutorial();
+
   return (
     <div
       ref={sidebarRef}
@@ -66,7 +69,7 @@ const Sidebar = ({ onClose }) => {
         width: '250px',
         height: '100%',
         backgroundColor: 'white',
-        boxShadow: '4px 0 10px rgba(0, 0, 0, 0.4)', // Updated shadow
+        boxShadow: '4px 0 10px rgba(0, 0, 0, 0.4)',
         zIndex: 2000,
         padding: '20px',
         transition: isDragging ? 'none' : 'left 0.3s ease-out',
@@ -123,6 +126,14 @@ const Sidebar = ({ onClose }) => {
           <Link to="/feedback" onClick={onClose} style={{ color: 'rgb(83, 211, 147)' }}>
             Feedback
           </Link>
+        </li>
+        {/* New Get Started button */}
+        <li style={{ marginBottom: '10px' }}>
+          <div>
+            <CartoonyButton onClick={() => { startTutorial(); onClose(); }}>
+              Get Started
+            </CartoonyButton>
+          </div>
         </li>
         {/* Track Location switch at the bottom */}
         <li style={{ marginTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

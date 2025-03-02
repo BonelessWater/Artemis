@@ -137,6 +137,8 @@ const autocompleteStyles = {
     padding: "10px",
     border: "1px solid #ccc",
     borderRadius: "4px",
+    color: "#000", // explicitly set input text color
+    backgroundColor: "#fff", // ensure background is white for contrast
   },
   suggestionsList: {
     listStyle: "none",
@@ -152,11 +154,13 @@ const autocompleteStyles = {
     zIndex: 1000,
     maxHeight: "200px",
     overflowY: "auto",
+    color: "#000", // ensure suggestions text is black
   },
   suggestionItem: {
     padding: "10px",
     cursor: "pointer",
     borderBottom: "1px solid #eee",
+    color: "#000", // set suggestion item text color
   },
 };
 
