@@ -16,7 +16,8 @@ API_KEY = os.getenv("API_KEY")
 app = Flask(__name__, template_folder="../frontend")
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///backend/users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(app.instance_path, 'users.db')}"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = API_KEY
 
 db = SQLAlchemy(app)
@@ -24,17 +25,24 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+friendship = db.Table('friendship',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id', primary_key=True)),
+    db.Column('friend_id', db.Integer, db.ForeignKey('user.id', primary_key=True))
+)
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)  # Make sure this line exists!
 
-    friends = db.relationship('User', secondary='friendship', backref='users', lazy='dynamic')
-       
-friendship = db.Table('friendship',
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id', primary_key=True)),
-    db.Column('friend_id', db.Integer, db.ForeignKey('user.id', primary_key=True))
-)
+    friends = db.relationship(
+        'User', 
+        secondary='friendship',
+        primaryjoin=(id == friendship.c.user_id),
+        secondaryjoin=(id == friendship.c.friend_id),
+        backref='friend_users', 
+        lazy='dynamic'
+    )
 
 def create_db():
     db_path = os.path.join(app.instance_path, 'users.db')
@@ -46,40 +54,43 @@ create_db()
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
-    return jsonify({"message": "Hello from Flask!", "users": ["Alice", "Bob", "Charlie"]})
+    # Query all users from the database
+    users = User.query.all()
+    # Create a list of usernames to return in the response
+    usernames = [user.username for user in users]
+    return jsonify({"users": usernames})
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = generate_password_hash(request.form['password'])
+    username = request.form['username']
+    password = generate_password_hash(request.form['password'])
 
-        if User.query.filter_by(username=username).first():
-            return "Username already exists!"
+    if User.query.filter_by(username=username).first():
+        return jsonify({"error": "Username already exists!"}), 400
 
-        new_user = User(username=username, password=password)
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('login'))
+    new_user = User(username=username, password=password)
+    db.session.add(new_user)
+    db.session.commit()
 
-    return render_template('register.html')
+    return jsonify({"message": "User registered successfully!"}), 201
 
-@app.route('/login', methods=['GET', 'POST'])
+
+@app.route('/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username).first()
+    username = request.json.get('username')
+    password = request.json.get('password')
 
-        if user and check_password_hash(user.password, password):
-            login_user(user)
-            return redirect(url_for('dashboard'))
-        return "Invalid credentials :("
-    return render_template('login.html')
+    user = User.query.filter_by(username=username).first()
+    if user and check_password_hash(user.password, password):
+        login_user(user)
+        return jsonify({"message": "Login successful!"}), 200
+
+    return jsonify({"error": "Invalid credentials"}), 401
+
 
 @app.route('/friends', methods=['GET', 'POST'])
 @login_required
@@ -101,13 +112,13 @@ def friends():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return f"Hello {current_user.username}!"
+    return jsonify({"message": f"Hello {current_user.username}!"})
 
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    return jsonify({"message": "Logout successful!"})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
