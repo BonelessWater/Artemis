@@ -1,29 +1,82 @@
 import React, { useState } from "react";
 
 const DiscussionForum = () => {
+  // Define an array of random usernames to use
+  const randomUsernames = [
+    "MountainHiker", "UrbanSurvivalist", "WildernessPro", 
+    "PrepperNinja", "ReadyAlways", "StormRider", 
+    "BugOutExpert", "EmergencyGuru", "OffGridLiving", 
+    "SurviveAndThrive", "GearCollector", "CampingPro",
+    "ForageKing", "PrepQueen", "ShelterBuilder",
+    "WaterWise", "SelfSufficient", "BackwoodsExplorer"
+  ];
+  
+  // Function to get a random username
+  const getRandomUsername = () => {
+    return randomUsernames[Math.floor(Math.random() * randomUsernames.length)];
+  };
+
+  // Function to truncate text with ellipsis
+  const truncateText = (text, maxLength) => {
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength) + '...';
+  };
+
   const [posts, setPosts] = useState([
-    { id: 1, title: "How to start prepping?", description: "Tips for beginners on emergency preparedness.", comments: [{ user: "yungthickdaddy", text: "Start with water storage!" }, { user: "survivalKing", text: "Buy a first aid kit." }] },
-    { id: 2, title: "Best survival gear recommendations?", description: "A discussion on must-have survival tools.", comments: [{ user: "prepMaster", text: "Fire starter is a must!" }, { user: "wildHunter", text: "Get a multi-tool." }] },
-    { id: 3, title: "Water purification techniques?", description: "Effective ways to ensure clean drinking water.", comments: [{ user: "camper23", text: "Boiling is the safest." }, { user: "offgridMike", text: "Use a water filter." }] }
+    { 
+      id: 1, 
+      title: "How to start prepping?", 
+      description: "Tips for beginners on emergency preparedness.", 
+      image: "/images/question.png", 
+      comments: [
+        { user: getRandomUsername(), text: "Start with water storage!" }, 
+        { user: getRandomUsername(), text: "Buy a first aid kit." }
+      ] 
+    },
+    { 
+      id: 2, 
+      title: "Best survival gear recommendations?", 
+      description: "A discussion on must-have survival tools.", 
+      image: "/images/pickaxe.png", 
+      comments: [
+        { user: getRandomUsername(), text: "Fire starter is a must!" }, 
+        { user: getRandomUsername(), text: "Get a multi-tool." }
+      ] 
+    },
+    { 
+      id: 3, 
+      title: "Water purification techniques?", 
+      description: "Effective ways to ensure clean drinking water.", 
+      image: "/images/water.png", 
+      comments: [
+        { user: getRandomUsername(), text: "Boiling is the safest." }, 
+        { user: getRandomUsername(), text: "Use a water filter." }
+      ] 
+    }
   ]);
 
   const [selectedPost, setSelectedPost] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [image, setImage] = useState(null);
+  const [tempComments, setTempComments] = useState([]);
 
   const handlePostClick = (post) => {
     setSelectedPost(post);
+    setTempComments(post.comments); // Preserve original comments
   };
 
   const closePopup = () => {
     setSelectedPost(null);
     setNewComment("");
     setImage(null);
+    setTempComments([]); // Reset temp comments when closing
   };
 
   const handleAddComment = () => {
     if (newComment.trim() !== "" || image) {
-      setSelectedPost({ ...selectedPost, comments: [...selectedPost.comments, { user: "anonymous", text: newComment, image }] });
+      // Use a random username for new comments
+      const newCommentObj = { user: getRandomUsername(), text: newComment, image };
+      setTempComments([...tempComments, newCommentObj]);
       setNewComment("");
       setImage(null);
     }
@@ -40,6 +93,9 @@ const DiscussionForum = () => {
     }
   };
 
+  // Define dark grey color
+  const darkGrey = "#444444";
+
   return (
     <div className="min-height-100vh" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingTop: "80px", width: "100%", maxWidth: "100vw" }}>
       {/* Header section */}
@@ -53,35 +109,99 @@ const DiscussionForum = () => {
       {/* Discussion Forum Posts */}
       <div style={{ width: "90%", maxWidth: "800px", marginTop: "100px", display: "flex", flexDirection: "column", alignItems: "center" }}>
         {posts.map(post => (
-          <button key={post.id} onClick={() => handlePostClick(post)} style={{ background: "white", padding: "15px", marginBottom: "10px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", textAlign: "left", border: "1px solid #ddd", cursor: "pointer", width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
-            <div style={{ flex: "1 1 auto", minWidth: "60%" }}>
-              <h2 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "5px", textAlign: "left" }}>{post.title}</h2>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <p style={{ fontSize: "1rem", color: "gray", fontWeight: "bold", marginRight: "10px" }}>Description:</p>
-                <p style={{ fontSize: "1rem", color: "gray" }}>{post.description}</p>
-              </div>
+          <button key={post.id} onClick={() => handlePostClick(post)} 
+            style={{ 
+              background: "white", 
+              padding: "20px", 
+              marginBottom: "10px", 
+              borderRadius: "10px", 
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", 
+              textAlign: "left", 
+              border: "1px solid #ccc", 
+              cursor: "pointer", 
+              width: "100%", 
+              display: "flex", 
+              alignItems: "center", 
+              justifyContent: "space-between",
+              position: "relative",
+              minHeight: "120px"
+            }}>
+            <div style={{ 
+              flex: "1", 
+              minWidth: "0", 
+              paddingRight: "80px" // Make space for the image
+            }}>
+              <h2 style={{ 
+                fontSize: "1.8rem", 
+                fontWeight: "bold", 
+                marginBottom: "8px", 
+                color: "rgba(0, 0, 0, 1)", 
+                whiteSpace: "nowrap", 
+                overflow: "hidden", 
+                textOverflow: "ellipsis", 
+                maxWidth: "100%"
+              }}>
+                {truncateText(post.title, 30)}
+              </h2>
+              <p style={{ fontSize: "1rem", fontWeight: "bold", color: "rgba(0, 0, 0, 1)", marginBottom: "5px" }}>Description:</p>
+              <p style={{ 
+                fontSize: "1rem", 
+                color: "rgba(0, 0, 0, 1)", 
+                marginBottom: "10px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical"
+              }}>
+                {truncateText(post.description, 80)}
+              </p>
             </div>
-            <img src={`/images/${post.id === 1 ? "question.png" : post.id === 2 ? "pickaxe.png" : "water.png"}`} alt="Post Image" style={{ width: "60px", height: "60px", flexShrink: 0 }} />
+            <div style={{ 
+              position: "absolute", 
+              right: "20px", 
+              top: "50%", 
+              transform: "translateY(-50%)", 
+              width: "70px", 
+              height: "70px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}>
+              <img src={post.image} alt="Post Image" style={{ maxWidth: "100%", maxHeight: "100%" }} />
+            </div>
           </button>
         ))}
       </div>
 
       {/* Full Page Popup Window */}
       {selectedPost && (
-        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "white", color: "black", padding: "20px", textAlign: "center", zIndex: 20, overflowY: "auto" }}>
-          <strong style={{ fontSize: "2rem" }}>{selectedPost.title}</strong>
-          <div style={{ textAlign: "left", marginTop: "10px" }}>
-            <p style={{ fontSize: "1rem", fontWeight: "bold" }}>Description:</p>
-            <p style={{ fontSize: "1.2rem" }}>{selectedPost.description}</p>
-          </div>
+        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "white", color: darkGrey, padding: "20px", textAlign: "left", zIndex: 20, overflowY: "auto" }}>
+          <h2 style={{ fontSize: "2rem", fontWeight: "bold", marginBottom: "10px", color: darkGrey }}>{selectedPost.title}</h2>
+          <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "5px", color: darkGrey }}>Description:</p>
+          <p style={{ fontSize: "1.2rem", marginBottom: "10px", color: darkGrey }}>{selectedPost.description}</p>
 
           {/* Comments Section */}
-          <div style={{ textAlign: "left", marginTop: "20px" }}>
-            <h3 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>Comments:</h3>
-            <ul>
-              {selectedPost.comments.map((comment, index) => (
-                <li key={index} style={{ marginBottom: "5px" }}>
-                  <strong>{comment.user}:</strong> {comment.text}
+          <div style={{ marginTop: "20px" }}>
+            <h3 style={{ fontSize: "1.5rem", fontWeight: "bold", color: darkGrey }}>Comments:</h3>
+            <ul style={{ listStyleType: "none", padding: 0 }}>
+              {tempComments.map((comment, index) => (
+                <li key={index} style={{ 
+                  marginBottom: "15px", 
+                  color: darkGrey,
+                  padding: "10px",
+                  borderLeft: "3px solid #888",
+                  backgroundColor: "#f8f8f8"
+                }}>
+                  <div style={{ 
+                    fontSize: "1.1rem", 
+                    color: darkGrey, 
+                    fontWeight: "bold",
+                    marginBottom: "5px"
+                  }}>
+                    {comment.user}:
+                  </div>
+                  <div style={{ fontSize: "1rem", color: darkGrey }}>{comment.text}</div>
                   {comment.image && <img src={comment.image} alt="User Upload" style={{ display: "block", maxWidth: "100px", marginTop: "5px" }} />}
                 </li>
               ))}
@@ -90,9 +210,9 @@ const DiscussionForum = () => {
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Write a comment..."
-              style={{ width: "100%", padding: "10px", marginTop: "10px", color: "black", background: "white", border: "1px solid black" }}
+              style={{ width: "100%", padding: "10px", marginTop: "10px", color: darkGrey, background: "white", border: "1px solid #888" }}
             ></textarea>
-            <input type="file" accept="image/*" onChange={handleImageUpload} style={{ marginTop: "10px" }} />
+            <input type="file" accept="image/*" onChange={handleImageUpload} style={{ marginTop: "10px", color: darkGrey }} />
             <button onClick={handleAddComment} style={{ marginTop: "10px", background: "black", color: "white", border: "none", padding: "5px 10px", cursor: "pointer", borderRadius: "3px" }}>Post Comment</button>
           </div>
 
