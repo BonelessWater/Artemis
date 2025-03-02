@@ -6,6 +6,7 @@ import CartoonyButton from '../components/CartoonyButton';
 import Sidebar from '../components/Sidebar';
 import DraggableCard from '../components/DraggableCard';
 
+<<<<<<< HEAD:artemis/src/components/Body.js
 /* ====================================================================
    Dummy Leaderboard Data and Leaderboard Component
    ==================================================================== */
@@ -24,16 +25,14 @@ const dummyLeaderboard = [
 
 const Leaderboard = () => {
   return (
-    <div
-      style={{
-        backgroundColor: 'rgb(83, 211, 147)',
-        borderRadius: '10px',
-        padding: '15px',
-        width: '100%',
-        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
-        fontSize: '14px'
-      }}
-    >
+    <div style={{
+      backgroundColor: 'rgb(83, 211, 147)',
+      borderRadius: '10px',
+      padding: '15px',
+      width: '100%',
+      boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
+      fontSize: '14px'
+    }}>
       <h3 style={{ color: 'white', marginBottom: '10px', fontSize: '16px' }}>Leaderboard</h3>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
@@ -73,16 +72,14 @@ const dummyFriends = [
 
 const FriendsList = () => {
   return (
-    <div
-      style={{
-        backgroundColor: 'rgb(83, 211, 147)',
-        borderRadius: '10px',
-        padding: '15px',
-        width: '100%',
-        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
-        fontSize: '14px'
-      }}
-    >
+    <div style={{
+      backgroundColor: 'rgb(83, 211, 147)',
+      borderRadius: '10px',
+      padding: '15px',
+      width: '100%',
+      boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
+      fontSize: '14px'
+    }}>
       <h3 style={{ color: 'white', marginBottom: '10px', fontSize: '16px' }}>Friends</h3>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
@@ -115,6 +112,8 @@ const FriendsList = () => {
 /* ====================================================================
    SosSlider Component – Slide from right to left to confirm SOS
    ==================================================================== */
+=======
+>>>>>>> 28eea9c22ad15213798e1f5b591d446b244edbb8:artemis/src/pages/Body.js
 const SosSlider = ({ onConfirm }) => {
   const sliderRef = useRef(null);
   const handleRef = useRef(null);
@@ -145,7 +144,6 @@ const SosSlider = ({ onConfirm }) => {
     }
   };
 
-  // Mouse handlers
   const onMouseDown = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -165,11 +163,9 @@ const SosSlider = ({ onConfirm }) => {
     e.stopPropagation();
     e.preventDefault();
     setDragging(false);
-    // If handle is near the left edge, confirm SOS
     if (handleLeft !== null && handleLeft < 20) {
       if (onConfirm) onConfirm();
     } else {
-      // Otherwise, reset handle to right side
       if (sliderRef.current && handleRef.current) {
         const sliderWidth = sliderRef.current.offsetWidth;
         const handleWidth = handleRef.current.offsetWidth;
@@ -178,7 +174,6 @@ const SosSlider = ({ onConfirm }) => {
     }
   };
 
-  // Touch handlers
   const onTouchStart = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -252,6 +247,7 @@ const SosSlider = ({ onConfirm }) => {
   );
 };
 
+<<<<<<< HEAD:artemis/src/components/Body.js
 /* ====================================================================
    DraggableCard Component – Draggable Card for SOS Confirmation
    ==================================================================== */
@@ -261,7 +257,6 @@ const DraggableCard = ({ children, onClose }) => {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
-  // Center card on initial render
   useEffect(() => {
     if (cardRef.current) {
       const cardWidth = cardRef.current.offsetWidth;
@@ -337,21 +332,17 @@ const DraggableCard = ({ children, onClose }) => {
    Body Component – Main Component Containing Application Content
    ==================================================================== */
 const Body = () => {
+=======
+const Body = () => {
   const navigate = useNavigate();
-
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+>>>>>>> 28eea9c22ad15213798e1f5b591d446b244edbb8:artemis/src/pages/Body.js
   const [showSosCard, setShowSosCard] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Add-Friend popup
-  const [showAddFriend, setShowAddFriend] = useState(false);
-  const [friendUsername, setFriendUsername] = useState("");
-
-  // Check authentication on mount
   useEffect(() => {
-    axios
-      .get('http://localhost:5000/dashboard', { withCredentials: true })
-      .then(() => {
+    axios.get('http://localhost:5000/dashboard', { withCredentials: true })
+      .then((response) => {
         setIsAuthenticated(true);
       })
       .catch((error) => {
@@ -360,20 +351,25 @@ const Body = () => {
       });
   }, [navigate]);
 
-  // If not authenticated, show loading or redirect
-  if (!isAuthenticated) {
-    return <div>Loading...</div>;
-  }
+<<<<<<< HEAD:artemis/src/components/Body.js
+  // NEW: For Add-Friend popup
+  const [showAddFriend, setShowAddFriend] = useState(false);
+  const [friendUsername, setFriendUsername] = useState("");
 
+=======
+>>>>>>> 28eea9c22ad15213798e1f5b591d446b244edbb8:artemis/src/pages/Body.js
   const handleSosConfirm = () => {
     alert('SOS Confirmed!');
     setShowSosCard(false);
   };
 
+<<<<<<< HEAD:artemis/src/components/Body.js
+  // Called when the user clicks the "person.png" button
   const handlePersonClick = () => {
     setShowAddFriend(true);
   };
 
+  // Called when the user clicks "Search" in the Add-Friend popup
   const handleSearchFriend = () => {
     alert('friend found and invite requested!');
     setShowAddFriend(false);
@@ -382,25 +378,6 @@ const Body = () => {
 
   return (
     <>
-      {/* Sidebar overlay if open */}
-      {sidebarOpen && (
-        <div
-          onClick={() => setSidebarOpen(false)}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0,0,0,0.3)',
-            zIndex: 1500,
-          }}
-        />
-      )}
-      {/* Actual sidebar if open */}
-      {sidebarOpen && <Sidebar onClose={() => setSidebarOpen(false)} />}
-
-      {/* Main Container */}
       <div
         style={{
           margin: '0 auto',
@@ -409,14 +386,13 @@ const Body = () => {
           width: '100%'
         }}
       >
-        {/* Top Bar with Experience & Icons */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <ExperienceBar current={350} max={500} level={5} />
 
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <button
               style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
-              onClick={() => setSidebarOpen(true)}
+              onClick={() => console.log('Menu clicked')}
             >
               <img
                 src="/images/menu.png"
@@ -449,16 +425,8 @@ const Body = () => {
           </div>
         </div>
 
-        {/* Row of 3 Buttons: Prep, Help, SOS */}
-        <div
-          className="row"
-          style={{
-            marginTop: '35px',
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '10px'
-          }}
-        >
+        {/* Three buttons next to each other */}
+        <div className="row" style={{ marginTop: '35px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
           <div className="col s4">
             <CartoonyButton to="/prep" color="rgb(83, 211, 147)" size="large" width="100%">
               Prep
@@ -514,10 +482,7 @@ const Body = () => {
           </div>
         </div>
 
-        <div
-          className="container center-align"
-          style={{ marginTop: '30px', position: 'relative' }}
-        >
+        <div className="container center-align" style={{ marginTop: '30px', position: 'relative' }}>
           {/* Trophy Image Above the Buttons */}
           <div style={{ marginBottom: '20px' }}>
             <Link to="/achieve">
@@ -534,14 +499,9 @@ const Body = () => {
             </Link>
           </div>
 
-          {/* Bounty Button */}
+          {/* Bounty Button using CartoonyButton */}
           <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-            <CartoonyButton
-              to="/research"
-              color="rgb(239, 221, 121)"
-              size="large"
-              width="auto"
-            >
+            <CartoonyButton to="/research" color="rgb(239, 221, 121)" size="large" width="auto">
               Bounty
               <img
                 src="/images/star-white.png"
@@ -580,14 +540,11 @@ const Body = () => {
             </div>
           </div>
 
-          {/* Draggable SOS Confirmation Card */}
+          {/* Conditionally render the SOS confirmation card */}
           {showSosCard && (
             <DraggableCard onClose={() => setShowSosCard(false)}>
               <div className="card-content">
-                <span
-                  className="card-title"
-                  style={{ color: '#155724', fontWeight: 'bold' }}
-                >
+                <span className="card-title" style={{ color: '#155724', fontWeight: 'bold' }}>
                   911
                 </span>
                 <p style={{ color: '#155724' }}>Slide the button to call 911.</p>
@@ -596,9 +553,174 @@ const Body = () => {
             </DraggableCard>
           )}
         </div>
+=======
+  if (!isAuthenticated) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <>
+      {/* Overlay to close sidebar when clicked */}
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0,0,0,0.3)',
+            zIndex: 1500,
+          }}
+        ></div>
+      )}
+
+      {/* Render the sidebar if open */}
+      {sidebarOpen && <Sidebar onClose={() => setSidebarOpen(false)} />}
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <ExperienceBar current={350} max={500} level={5} />
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <button
+            style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+            onClick={() => setSidebarOpen(true)}
+          >
+            <img
+              src="/images/menu.png"
+              alt="Menu"
+              style={{
+                position: 'relative',
+                top: '25px',
+                left: '-10px',
+                width: '30px',
+                height: '30px'
+              }}
+            />
+          </button>
+          <button
+            style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+            onClick={() => console.log('Person clicked')}
+          >
+            <img
+              src="/images/person.png"
+              alt="Person"
+              style={{
+                position: 'relative',
+                top: '25px',
+                left: '-15px',
+                width: '30px',
+                height: '30px'
+              }}
+            />
+          </button>
+        </div>
       </div>
 
-      {/* "Add Friend" popup modal */}
+      <div className="row" style={{ marginTop: '35px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
+        <div className="col s4">
+          <CartoonyButton to="/prep" color="rgb(83, 211, 147)" size="large" width="100%">
+            Prep
+            <img
+              src="/images/star-white.png"
+              alt="Icon"
+              style={{
+                position: 'absolute',
+                top: '-3px',
+                right: '-3px',
+                width: '20px',
+                height: '20px'
+              }}
+            />
+          </CartoonyButton>
+        </div>
+        <div className="col s4">
+          <CartoonyButton to="/help" color="rgb(83, 211, 147)" size="large" width="100%">
+            Help
+            <img
+              src="/images/star-white.png"
+              alt="Icon"
+              style={{
+                position: 'absolute',
+                top: '-3px',
+                right: '-3px',
+                width: '20px',
+                height: '20px'
+              }}
+            />
+          </CartoonyButton>
+        </div>
+        <div className="col s4">
+          <CartoonyButton
+            onClick={() => setShowSosCard(true)}
+            color="rgb(83, 211, 147)"
+            size="large"
+            width="100%"
+          >
+            SOS
+            <img
+              src="/images/star-white.png"
+              alt="Icon"
+              style={{
+                position: 'absolute',
+                top: '-3px',
+                right: '-3px',
+                width: '20px',
+                height: '20px'
+              }}
+            />
+          </CartoonyButton>
+        </div>
+      </div>
+
+      <div className="container center-align" style={{ marginTop: '30px' }}>
+        <div style={{ marginBottom: '20px' }}>
+          <Link to="/achieve">
+            <img
+              src={process.env.PUBLIC_URL + "/images/trophy.webp"}
+              alt="Trophy"
+              style={{
+                display: 'block',
+                margin: '0 auto',
+                maxWidth: '250px',
+                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.5)'
+              }}
+            />
+          </Link>
+        </div>
+
+        <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+          <CartoonyButton to="/research" color="rgb(239, 221, 121)" size="large" width="auto">
+            Bounty
+            <img
+              src="/images/star-white.png"
+              alt="Icon"
+              style={{
+                position: 'absolute',
+                top: '-3px',
+                right: '-3px',
+                width: '20px',
+                height: '20px'
+              }}
+            />
+          </CartoonyButton>
+        </div>
+      
+        {showSosCard && (
+          <DraggableCard onClose={() => setShowSosCard(false)}>
+            <div className="card-content">
+              <span className="card-title" style={{ color: '#155724', fontWeight: 'bold' }}>
+                911
+              </span>
+              <p style={{ color: '#155724' }}>Slide the button to call 911.</p>
+              <SosSlider onConfirm={handleSosConfirm} />
+            </div>
+          </DraggableCard>
+        )}
+>>>>>>> 28eea9c22ad15213798e1f5b591d446b244edbb8:artemis/src/pages/Body.js
+      </div>
+
+      {/* Conditionally render the "Add Friend" popup modal */}
       {showAddFriend && (
         <div
           style={{
@@ -625,9 +747,7 @@ const Body = () => {
             }}
             onClick={(e) => e.stopPropagation()} // prevent closing if clicking inside
           >
-            <h2 style={{ margin: '0 0 10px' }}>
-              Add by putting your friend's username below:
-            </h2>
+            <h2 style={{ margin: '0 0 10px' }}>Add by putting your friend's username below:</h2>
             <input
               type="text"
               placeholder="Username"
