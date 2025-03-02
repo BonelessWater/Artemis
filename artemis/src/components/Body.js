@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ExperienceBar from './ExperienceBar';
 import CartoonyButton from './CartoonyButton';
+import { Link } from 'react-router-dom';
 
 // SosSlider Component – Slide from right to left to confirm SOS
 const SosSlider = ({ onConfirm }) => {
@@ -306,7 +307,23 @@ const Body = () => {
         
         {/* Three buttons next to each other */}
         <div className="row" style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-        <div className="col s5">
+        <div className="col s4">
+          <CartoonyButton to="/prep" color="rgb(83, 211, 147)" size="large" width="100%">
+            Prep
+            <img
+              src="/images/star-white.png"
+              alt="Icon"
+              style={{
+                position: 'absolute',
+                top: '-3px',
+                right: '-3px',
+                width: '20px',
+                height: '20px'
+              }}
+            />
+          </CartoonyButton>
+        </div>
+        <div className="col s4">
           <CartoonyButton to="/help" color="rgb(83, 211, 147)" size="large" width="100%">
             Help
             <img
@@ -322,10 +339,7 @@ const Body = () => {
             />
           </CartoonyButton>
         </div>
-        <div className="col s2">
-          {/* Unused button placeholder */}
-        </div>
-        <div className="col s5">
+        <div className="col s4">
           <CartoonyButton
             onClick={() => setShowSosCard(true)}
             color="rgb(83, 211, 147)"

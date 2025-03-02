@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Body from './components/Body';
 import ResearchPage from './components/ResearchPage';
 import HelpPage from './components/HelpPage';
+import PrepPage from './components/PrepPage';
 import AcheivementPage from './components/AchievementPage';
 
 const SettingsPage = () => (
@@ -30,6 +31,7 @@ const App = () => (
         <Route path="/research" element={<ResearchPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/help" element={<HelpPage />} />
+        <Route path="/prep" element={<PrepPage />} />
         <Route path="/achieve" element={<AcheivementPage />} />
       </Routes>
     </Router>
