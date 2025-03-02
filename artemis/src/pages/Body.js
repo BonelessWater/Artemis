@@ -461,7 +461,13 @@ const Body = () => {
 
           {/* Bounty Button */}
           <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-            <CartoonyButton to="/research" color="rgb(239, 221, 121)" size="large" width="50%">
+            <CartoonyButton
+              to="/research"
+              color="rgb(239, 221, 121)"
+              size="large"
+              width="50%"
+              movement={true}  // This is optional since movement defaults to true
+            >
               Bounty
               <img
                 src="/images/star-white.png"
@@ -471,7 +477,7 @@ const Body = () => {
                   top: '-3px',
                   right: '-3px',
                   width: '20px',
-                  height: '20px'
+                  height: '20px',
                 }}
               />
             </CartoonyButton>
@@ -542,9 +548,10 @@ const Body = () => {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 style={{ margin: '0 0 10px' }}>
-              Add by putting your friend's username below:
-            </h2>
+            <h2 style={{ margin: '0 0 10px' }}>Add a Friend</h2>
+            <p style={{ marginBottom: '10px', fontSize: '14px', color: '#333' }}>
+              Enter your friend's username below to send a friend request.
+            </p>
             <input
               type="text"
               placeholder="Username"
