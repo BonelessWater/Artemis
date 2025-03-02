@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import FileAutocomplete from "./FileAutocomplete";
-import CartoonyButton from "./CartoonyButton";
+import FileAutocomplete from "../components/FileAutocomplete";
+import CartoonyButton from "../components/CartoonyButton";
 
 // Helper function to format the output string
 const formatOutput = (text) => {

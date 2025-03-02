@@ -22,7 +22,7 @@ const DiscussionForum = () => {
     return text.slice(0, maxLength) + '...';
   };
 
-  const [posts, setPosts] = useState([
+  const [posts] = useState([
     { 
       id: 1, 
       title: "How to start prepping?", 
@@ -168,7 +168,7 @@ const DiscussionForum = () => {
               justifyContent: "center",
               alignItems: "center"
             }}>
-              <img src={post.image} alt="Post Image" style={{ maxWidth: "100%", maxHeight: "100%" }} />
+              <img src={post.image} alt="" style={{ maxWidth: "100%", maxHeight: "100%" }} />
             </div>
           </button>
         ))}

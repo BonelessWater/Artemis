@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CartoonyButton from "./CartoonyButton";
+import CartoonyButton from "../components/CartoonyButton";
 
 const Achievements = () => {
   const [selectedAchievement, setSelectedAchievement] = useState(null);

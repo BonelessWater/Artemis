@@ -5,12 +5,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Login from './auth/Login';
 import Signup from './auth/Signup';
-import Body from './components/Body';
+import Body from './pages/Body';
 
-import ResearchPage from './components/ResearchPage';
-import HelpPage from './components/HelpPage';
-import PrepPage from './components/PrepPage';
-import AcheivementPage from './components/AchievementPage';
+import ResearchPage from './pages/ResearchPage';
+import HelpPage from './pages/HelpPage';
+import PrepPage from './pages/PrepPage';
+import AcheivementPage from './pages/AchievementPage';
 
 import 'materialize-css/dist/css/materialize.min.css';
 

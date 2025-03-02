@@ -1,6 +1,6 @@
 // src/components/ResearchPage.js
 import React from 'react';
-import CartoonyButton from './CartoonyButton';
+import CartoonyButton from '../components/CartoonyButton';
 
 const tasks = [
   {
