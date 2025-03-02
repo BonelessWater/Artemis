@@ -27,6 +27,10 @@ const CartoonyButton = ({
       padding: '15px 30px',
       fontSize: '22px',
     },
+    large2:  {
+      padding: '25px 40px',
+      fontSize: '40px',
+    },
   }[size] || {};
 
   // Merge color, size, explicit dimensions and any additional custom styles
