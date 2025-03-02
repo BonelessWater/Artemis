@@ -1,0 +1,1 @@
+{"name":"TechNomadsApp","version":"0.0.1","private":true,"scripts":{"start":"node node_modules/react-native/local-cli/cli.js start"},"dependencies":{"@react-native/metro-config":"^0.78.0","react-native":"0.78.0"},"devDependencies":{"@react-native-community/cli":"latest"}}

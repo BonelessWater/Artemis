@@ -44,6 +44,17 @@ const Leaderboard = () => {
       }}>
         Leaderboard
       </h3>
+    <div
+      style={{
+        backgroundColor: 'rgb(83, 211, 147)',
+        borderRadius: '10px',
+        padding: '15px',
+        width: '100%',
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
+        fontSize: '14px'
+      }}
+    >
+      <h3 style={{ color: 'white', marginBottom: '10px', fontSize: '16px' }}>Leaderboard</h3>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr style={{ borderBottom: '2px solid #ddd' }}>
@@ -145,6 +156,7 @@ const SosSlider = ({ onConfirm }) => {
     }
   };
 
+  // Mouse handlers
   const onMouseDown = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -164,9 +176,11 @@ const SosSlider = ({ onConfirm }) => {
     e.stopPropagation();
     e.preventDefault();
     setDragging(false);
+    // If the handle is near the left edge, confirm
     if (handleLeft !== null && handleLeft < 20) {
       if (onConfirm) onConfirm();
     } else {
+      // Otherwise reset to right
       if (sliderRef.current && handleRef.current) {
         const sliderWidth = sliderRef.current.offsetWidth;
         const handleWidth = handleRef.current.offsetWidth;
@@ -175,6 +189,7 @@ const SosSlider = ({ onConfirm }) => {
     }
   };
 
+  // Touch handlers
   const onTouchStart = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -259,9 +274,15 @@ const Body = () => {
   const [showSosCard, setShowSosCard] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // For Add-Friend popup
+  const [showAddFriend, setShowAddFriend] = useState(false);
+  const [friendUsername, setFriendUsername] = useState("");
+
+  // Check authentication on mount
   useEffect(() => {
-    axios.get('http://localhost:5000/dashboard', { withCredentials: true })
-      .then((response) => {
+    axios
+      .get('http://localhost:5000/dashboard', { withCredentials: true })
+      .then(() => {
         setIsAuthenticated(true);
       })
       .catch((error) => {
@@ -270,6 +291,12 @@ const Body = () => {
       });
   }, [navigate]);
 
+  // If not authenticated, show loading or redirect
+  if (!isAuthenticated) {
+    return <div>Loading...</div>;
+  }
+
+  // Called when the slider confirms the SOS action
   // For Add-Friend popup
   const [showAddFriend, setShowAddFriend] = useState(false);
   const [friendUsername, setFriendUsername] = useState("");
@@ -279,12 +306,13 @@ const Body = () => {
     setShowSosCard(false);
   };
 
+  // Person icon click -> open "Add Friend" popup
   // Called when the user clicks the "person.png" button
   const handlePersonClick = () => {
     setShowAddFriend(true);
   };
 
-  // Called when the user clicks "Search" in the Add-Friend popup
+  // Searching for friend
   const handleSearchFriend = () => {
     alert('friend found and invite requested!');
     setShowAddFriend(false);
@@ -293,6 +321,25 @@ const Body = () => {
 
   return (
     <>
+      {/* If sidebarOpen is true, show an overlay to close sidebar */}
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0,0,0,0.3)',
+            zIndex: 1500
+          }}
+        />
+      )}
+      {/* Render Sidebar if open */}
+      {sidebarOpen && <Sidebar onClose={() => setSidebarOpen(false)} />}
+
+      {/* Main Container */}
       {/* Conditionally render the Sidebar */}
       {sidebarOpen && <Sidebar onClose={() => setSidebarOpen(false)} />}
 
@@ -304,12 +351,13 @@ const Body = () => {
           width: '100%'
         }}
       >
+        {/* Top Bar: Experience & Icons */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <ExperienceBar current={350} max={500} level={5} />
-
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <button
               style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+              onClick={() => setSidebarOpen(true)}
               onClick={() => setSidebarOpen(true)}
             >
               <img
@@ -343,8 +391,16 @@ const Body = () => {
           </div>
         </div>
 
-        {/* Three buttons next to each other */}
-        <div className="row" style={{ marginTop: '35px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
+        {/* Row of 3 Buttons: Prep, Help, SOS */}
+        <div
+          className="row"
+          style={{
+            marginTop: '35px',
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '10px'
+          }}
+        >
           <div className="col s4">
             <CartoonyButton to="/prep" color="rgb(83, 211, 147)" size="large" width="100%">
               Prep
@@ -400,8 +456,9 @@ const Body = () => {
           </div>
         </div>
 
+        {/* Trophy, Bounty, Leaderboard & Friends */}
         <div className="container center-align" style={{ marginTop: '30px', position: 'relative' }}>
-          {/* Trophy Image Above the Buttons */}
+          {/* Trophy */}
           <div style={{ marginBottom: '20px' }}>
             <Link to="/achieve">
               <img
@@ -417,7 +474,7 @@ const Body = () => {
             </Link>
           </div>
 
-          {/* Bounty Button using CartoonyButton */}
+          {/* Bounty Button */}
           <div style={{ marginBottom: '20px', textAlign: 'center' }}>
             <CartoonyButton to="/research" color="rgb(239, 221, 121)" size="large" width="50%">
               Bounty
@@ -435,7 +492,7 @@ const Body = () => {
             </CartoonyButton>
           </div>
 
-          {/* Centered Row for Leaderboard and FriendsList */}
+          {/* Centered Row for Leaderboard & Friends */}
           <div
             style={{
               position: 'absolute',
@@ -458,7 +515,7 @@ const Body = () => {
             </div>
           </div>
 
-          {/* Conditionally render the SOS confirmation card */}
+          {/* SOS Confirmation Card */}
           {showSosCard && (
             <DraggableCard onClose={() => setShowSosCard(false)}>
               <div className="card-content">
@@ -500,7 +557,9 @@ const Body = () => {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 style={{ margin: '0 0 10px' }}>Add by putting your friend's username below:</h2>
+            <h2 style={{ margin: '0 0 10px' }}>
+              Add by putting your friend's username below:
+            </h2>
             <input
               type="text"
               placeholder="Username"
