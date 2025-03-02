@@ -162,7 +162,7 @@ body {
 /* Apply your font to everything */
 * {
     font-family: 'PartyConfetti', sans-serif !important;
-    -webkit-text-stroke: 1.5px black; /* 1px black outline */
+    -webkit-text-stroke: 0.03em black; /* 1px black outline */
     color: white; /* The fill color of the text */
 }
 

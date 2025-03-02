@@ -4,19 +4,13 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Body from './components/Body';
 import ResearchPage from './components/ResearchPage';
+import HelpPage from './components/HelpPage';
 
 // Placeholder components...
 const SettingsPage = () => (
   <div className="container" style={{ marginTop: '30px' }}>
     <h3>Settings</h3>
     <p>Settings page content goes here.</p>
-  </div>
-);
-
-const HelpPage = () => (
-  <div className="container" style={{ marginTop: '30px' }}>
-    <h3>Help</h3>
-    <p>Help page content goes here.</p>
   </div>
 );
 
@@ -30,7 +24,7 @@ const AcheivementPage = () => (
 const App = () => (
   <div
     style={{
-      backgroundImage: `url(${process.env.PUBLIC_URL + "/images/background.png"})`,
+      backgroundImage: `url(${process.env.PUBLIC_URL + "/images/pixelated-background2.png"})`,
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundRepeat: "no-repeat",
