@@ -1,4 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
+import FileAutocomplete from "./FileAutocomplete";
+
+// Helper function to format the output string
+const formatOutput = (text) => {
+  // Remove leading and trailing double quotes if present
+  if (text.startsWith('"') && text.endsWith('"')) {
+    text = text.slice(1, -1);
+  }
+  // Replace literal "\n" with actual newline characters
+  return text.replace(/\\n/g, "\n");
+};
 
 // ChatBox component styled like ChatGPT conversation area
 const ChatBox = () => {
@@ -25,10 +36,13 @@ const ChatBox = () => {
       }
       const answer = await response.text();
 
+      // Process the output to format newlines and remove extra quotes
+      const formattedAnswer = formatOutput(answer);
+
       // Append the model's response to the chat
       setMessages((prev) => [
         ...prev,
-        { sender: "model", text: answer },
+        { sender: "model", text: formattedAnswer },
       ]);
     } catch (error) {
       console.error("Error fetching response:", error);
@@ -58,6 +72,7 @@ const ChatBox = () => {
               ...(msg.sender === "user"
                 ? styles.userBubble
                 : styles.modelBubble),
+              whiteSpace: "pre-wrap", // Ensures newline characters are rendered correctly
             }}
           >
             {msg.text}
@@ -84,63 +99,57 @@ const ChatBox = () => {
   );
 };
 
-// DataQuery component styled in a similar minimal way
+
 const DataQuery = () => {
-  const data = [
-    { id: 1, name: "Item One", description: "Description for item one" },
-    { id: 2, name: "Item Two", description: "Description for item two" },
-    { id: 3, name: "Item Three", description: "Description for item three" },
-  ];
+  const [selectedFile, setSelectedFile] = useState("");
+  const [fileURL, setFileURL] = useState("");
 
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-
-  const handleQuery = () => {
-    const filtered = data.filter(
-      (item) =>
-        item.name.toLowerCase().includes(query.toLowerCase()) ||
-        item.description.toLowerCase().includes(query.toLowerCase())
-    );
-    setResults(filtered);
+  const handleFileSelect = async (file) => {
+    setSelectedFile(file);
+    try {
+      const response = await fetch(`/get_file?filepath=${encodeURIComponent(file)}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      // Get the file as a Blob
+      const blob = await response.blob();
+      // Create a URL for the Blob so it can be rendered
+      const url = URL.createObjectURL(blob);
+      setFileURL(url);
+    } catch (error) {
+      console.error("Error fetching file content:", error);
+      setFileURL("");
+    }
   };
 
   return (
     <div style={styles.dataQueryContainer}>
       <div style={styles.sectionHeader}>Data Query</div>
-      <div style={styles.queryInputContainer}>
-        <input
-          type="text"
-          placeholder="Enter query..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          style={styles.queryInput}
-        />
-        <button onClick={handleQuery} style={styles.queryButton}>
-          Search
-        </button>
-      </div>
-      <div style={styles.resultsContainer}>
-        {results.length > 0 ? (
-          <ul style={{ paddingLeft: "20px" }}>
-            {results.map((item) => (
-              <li key={item.id}>
-                <strong>{item.name}:</strong> {item.description}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p style={styles.noResults}>No results found.</p>
-        )}
-      </div>
+      <FileAutocomplete onSelect={handleFileSelect} />
+      {selectedFile && fileURL && (
+        <div>
+          <p>
+            Selected File: <strong>{selectedFile}</strong>
+          </p>
+          {/* Display the PDF in an iframe */}
+          <iframe 
+            src={fileURL} 
+            title="PDF Viewer" 
+            width="100%" 
+            height="600px" 
+            style={{ border: "none" }}
+          />
+        </div>
+      )}
     </div>
   );
 };
+
 
 const HelpPage = () => (
   <div style={styles.pageContainer}>
     <h3 style={styles.pageHeader}>Help</h3>
     <p style={styles.pageSubheader}>
-      Ask questions to the model or query data below.
     </p>
     <ChatBox />
     <DataQuery />

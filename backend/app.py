@@ -1,7 +1,21 @@
 import os
-from flask import Flask, render_template, redirect, url_for, request, jsonify
+from flask import (
+    Flask, 
+    render_template, 
+    redirect, 
+    url_for, 
+    request, 
+    jsonify, 
+    send_file, 
+    abort)
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from flask_login import (
+    LoginManager, 
+    UserMixin, 
+    login_user, 
+    logout_user, 
+    login_required, 
+    current_user)
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 from flask_cors import CORS
@@ -127,5 +141,27 @@ def LLM_Chat():
     answer = model.reply(prompt)
     return jsonify(answer)
 
+@app.route('/get_file', methods=['GET'])
+def get_file():
+    filepath = request.args.get('filepath')
+    if not filepath:
+        abort(400, "Missing 'filepath' query parameter.")
+
+    file_name = os.path.basename(filepath)
+    try:
+        return send_file(
+            filepath,
+            mimetype='application/pdf',
+            as_attachment=True,
+            download_name=file_name,
+            conditional=True
+        )
+    except Exception as e:
+        abort(500, f"Error sending file: {e}")
+
+@app.route('/prep', methods=['GET'])
+def prep():
+    pass
+        
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

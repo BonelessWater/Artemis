@@ -1,6 +1,7 @@
+// Body.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import ExperienceBar from './ExperienceBar';
+import CartoonyButton from './CartoonyButton';
 
 // SosSlider Component – Slide from right to left to confirm SOS
 const SosSlider = ({ onConfirm }) => {
@@ -114,7 +115,45 @@ const Body = () => {
 
   return (
     <>
-      <ExperienceBar current={350} max={500} level={5} />
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <ExperienceBar current={350} max={500} level={5} />
+
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <button
+            style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+            onClick={() => console.log('Menu clicked')}
+          >
+            <img
+              src="/images/menu.png"
+              alt="Menu"
+              style={{
+                position: 'relative',
+                top: '25px',  // adjust vertical position here
+                left: '-10px', // adjust horizontal position here
+                width: '30px',
+                height: '30px'
+              }}
+            />
+          </button>
+          <button
+            style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+            onClick={() => console.log('Person clicked')}
+          >
+            <img
+              src="/images/person.png"
+              alt="Person"
+              style={{
+                position: 'relative',
+                top: '25px',  // adjust vertical position here
+                left: '-15px', // adjust horizontal position here
+                width: '30px',
+                height: '30px'
+              }}
+            />
+          </button>
+        </div>
+      </div>
+
       <div className="container center-align" style={{ marginTop: '30px' }}>
         {/* Trophy Image Above the Buttons */}
         <div style={{ marginBottom: '20px' }}>
@@ -129,49 +168,56 @@ const Body = () => {
             }}
           />
         </div>
+
+        {/* Bounty Button using CartoonyButton */}
+        <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+          <CartoonyButton to="/research" color="rgb(239, 221, 121)" size="large" width="auto">
+            Bounty
+            <img
+              src="/images/star-white.png"
+              alt="Icon"
+              style={{
+                position: 'absolute',
+                top: '-3px',
+                right: '-3px',
+                width: '20px',
+                height: '20px'
+              }}
+            />
+          </CartoonyButton>
+        </div>
         
         {/* Three buttons next to each other */}
         <div className="row" style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
           <div className="col s4">
-            <Link to="/help" style={{ width: '100%' }}>
-              <button
-                className="btn-large"
-                style={{ 
-                  backgroundColor: 'rgb(83, 211, 147)', 
-                  width: '100%',
-                  fontSize: '35px'
+            <CartoonyButton to="/help" color="rgb(83, 211, 147)" size="large" width="100%">
+              Help
+              <img
+                src="/images/star-white.png"
+                alt="Icon"
+                style={{
+                  position: 'absolute',
+                  top: '-3px',
+                  right: '-3px',
+                  width: '20px',
+                  height: '20px'
                 }}
-              >
-                Help
-              </button>
-            </Link>
+              />
+            </CartoonyButton>
           </div>
           <div className="col s4">
-            <Link to="/prep" style={{ width: '100%' }}>
-              <button 
-                className="btn-large" 
-                style={{ 
-                  backgroundColor: 'rgb(83, 211, 147)', 
-                  width: '100%',
-                  fontSize: '35px'
-                }}
-              >
-                Prep
-              </button>
-            </Link>
+            {/* Unused button placeholder */}
           </div>
           <div className="col s4">
-            <button
-              className="btn-large"
-              style={{ 
-                backgroundColor: 'rgb(83, 211, 147)', 
-                width: '100%',
-                fontSize: '35px'
-              }}
+            <CartoonyButton
               onClick={() => setShowSosCard(true)}
+              color="rgb(83, 211, 147)"
+              size="large"
+              width="100%"
+              height="50px"
             >
               SOS
-            </button>
+            </CartoonyButton>
           </div>
         </div>
 

@@ -7,33 +7,34 @@ const ExperienceBar = ({ current, max, level }) => {
   return (
     <div
       style={{
-        marginTop: '30px', // Margin from the top
+        marginTop: '30px',
         position: 'relative',
-        width: '100%',
-        height: '50px'
+        width: '70%',
+        height: '50px',
+        marginLeft: '2%'
       }}
       aria-label={`Level ${level} with ${current} out of ${max} experience`}
     >
-      {/* Progress Bar Container (positioned in the center vertically) */}
+      {/* Progress Bar Container */}
       <div
         style={{
           position: 'absolute',
-          top: '50%',
+          top: '70%',
           left: '0',
           transform: 'translateY(-50%)',
           width: '100%',
-          height: '10px',
-          backgroundColor: '#ccc',
-          borderRadius: '5px',
+          height: '20px',
+          backgroundColor: 'rgb(239, 242, 216)',
+          borderRadius: '7px',
           overflow: 'hidden',
-          zIndex: 0
+          zIndex: 0,
         }}
       >
         <div
           style={{
             width: `${percentage}%`,
             height: '100%',
-            backgroundColor: '#83CC6D',
+            backgroundColor: 'rgb(242, 247, 146)',
             transition: 'width 0.5s ease-in-out'
           }}
         />
@@ -44,8 +45,8 @@ const ExperienceBar = ({ current, max, level }) => {
         style={{
           position: 'absolute',
           left: '0',
-          width: '50px',
-          height: '50px',
+          width: '60px',
+          height: '60px',
           zIndex: 1
         }}
       >

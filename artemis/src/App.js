@@ -6,7 +6,6 @@ import Body from './components/Body';
 import ResearchPage from './components/ResearchPage';
 import HelpPage from './components/HelpPage';
 
-// Placeholder components...
 const SettingsPage = () => (
   <div className="container" style={{ marginTop: '30px' }}>
     <h3>Settings</h3>
@@ -25,10 +24,10 @@ const App = () => (
   <div
     style={{
       backgroundImage: `url(${process.env.PUBLIC_URL + "/images/pixelated-background2.png"})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-      height: "100vh"
+      backgroundPosition: "center top", // centers horizontally and aligns at the top vertically
+      backgroundRepeat: "repeat-y",       // repeats vertically only
+      backgroundSize: "auto",             // use natural image size, remove "cover"
+      height: "200vh"
     }}
   >
     <Router>
