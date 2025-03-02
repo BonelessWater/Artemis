@@ -2,18 +2,17 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Body from './components/Body';
-import ResearchPage from './components/ResearchPage';
-import HelpPage from './components/HelpPage';
-import PrepPage from './components/PrepPage';
-import AcheivementPage from './components/AchievementPage';
 
-const SettingsPage = () => (
-  <div className="container" style={{ marginTop: '30px' }}>
-    <h3>Settings</h3>
-    <p>Settings page content goes here.</p>
-  </div>
-);
+import Login from './auth/Login';
+import Signup from './auth/Signup';
+import Body from './pages/Body';
+
+import ResearchPage from './pages/ResearchPage';
+import HelpPage from './pages/HelpPage';
+import PrepPage from './pages/PrepPage';
+import AcheivementPage from './pages/AchievementPage';
+
+import 'materialize-css/dist/css/materialize.min.css';
 
 const App = () => (
   <div
@@ -27,13 +26,18 @@ const App = () => (
   >
     <Router>
       <Routes>
+
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+
         <Route path="/" element={<Body />} />
+
         <Route path="/research" element={<ResearchPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
         <Route path="/help" element={<HelpPage />} />
         <Route path="/prep" element={<PrepPage />} />
         <Route path="/achieve" element={<AcheivementPage />} />
         <Route path="/prep" element={<PrepPage />} />
+
       </Routes>
     </Router>
   </div>
