@@ -44,17 +44,6 @@ const Leaderboard = () => {
       }}>
         Leaderboard
       </h3>
-    <div
-      style={{
-        backgroundColor: 'rgb(83, 211, 147)',
-        borderRadius: '10px',
-        padding: '15px',
-        width: '100%',
-        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
-        fontSize: '14px'
-      }}
-    >
-      <h3 style={{ color: 'white', marginBottom: '10px', fontSize: '16px' }}>Leaderboard</h3>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr style={{ borderBottom: '2px solid #ddd' }}>
@@ -268,7 +257,6 @@ const SosSlider = ({ onConfirm }) => {
    ==================================================================== */
 const Body = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  console.log(isAuthenticated);
   const navigate = useNavigate();
 
   const [showSosCard, setShowSosCard] = useState(false);
@@ -297,17 +285,12 @@ const Body = () => {
   }
 
   // Called when the slider confirms the SOS action
-  // For Add-Friend popup
-  const [showAddFriend, setShowAddFriend] = useState(false);
-  const [friendUsername, setFriendUsername] = useState("");
-
   const handleSosConfirm = () => {
     alert('SOS Confirmed!');
     setShowSosCard(false);
   };
 
   // Person icon click -> open "Add Friend" popup
-  // Called when the user clicks the "person.png" button
   const handlePersonClick = () => {
     setShowAddFriend(true);
   };
@@ -340,9 +323,6 @@ const Body = () => {
       {sidebarOpen && <Sidebar onClose={() => setSidebarOpen(false)} />}
 
       {/* Main Container */}
-      {/* Conditionally render the Sidebar */}
-      {sidebarOpen && <Sidebar onClose={() => setSidebarOpen(false)} />}
-
       <div
         style={{
           margin: '0 auto',
@@ -357,7 +337,6 @@ const Body = () => {
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <button
               style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
-              onClick={() => setSidebarOpen(true)}
               onClick={() => setSidebarOpen(true)}
             >
               <img
