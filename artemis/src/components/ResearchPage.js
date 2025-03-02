@@ -1,5 +1,6 @@
 // src/components/ResearchPage.js
 import React from 'react';
+import CartoonyButton from './CartoonyButton';
 
 const tasks = [
   {
@@ -49,16 +50,50 @@ const getImageSrc = (requirement) => {
 
 const ResearchPage = () => {
   return (
-    <div className="container" style={{ marginTop: '30px' }}>
-      <h3
-        className="center-align"
+    <div className="container research-override" style={{ marginTop: '30px' }}>
+      {/* Global override for text color */}
+      <style>
+        {`
+          .research-override, 
+          .research-override h3, 
+          .research-override .card, 
+          .research-override .card * {
+            color: black !important;
+          }
+        `}
+      </style>
+      
+      {/* White header with back button */}
+      <div
+            className="white-header" 
         style={{
-          fontFamily: 'Fantasy, cursive',
-          color: 'rgba(77, 203, 70, 0.92)',
+          background: 'white',
+          padding: '0px 20px',
+          marginBottom: '20px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%'
         }}
       >
-        Bounties
-      </h3>
+        <CartoonyButton to="/" color="rgb(83, 211, 147)" size="medium" width="auto">
+          Back
+        </CartoonyButton>
+        <h1 
+          style={{
+            margin: 0,
+            fontFamily: 'Fantasy, cursive',
+            color: 'black',
+            textAlign: 'center',
+            flexGrow: 1
+          }}
+        >
+          Bounties
+        </h1>
+        {/* Empty space for alignment (or you can add another button if desired) */}
+        <div style={{ width: '90px' }}></div>
+      </div>
+      
       <div className="row">
         {tasks.map((task, index) => (
           <div className="col s12 m12" key={index}>
@@ -76,7 +111,7 @@ const ResearchPage = () => {
                   <div className="col s8">
                     <span
                       className="card-title"
-                      style={{ fontFamily: 'Fantasy, cursive', color: '#83CC6D' }}
+                      style={{ fontFamily: 'Fantasy, cursive' }}
                     >
                       {task.researcher}
                     </span>
@@ -91,27 +126,20 @@ const ResearchPage = () => {
                     </p>
                   </div>
                   {/* Right side: Task image */}
-                  <div className="col s4">
+                  <div className="col s4" style={{ textAlign: 'right' }}>
                     <img 
                       src={getImageSrc(task.requirement)}
                       alt="Task" 
                       className="responsive-img" 
-                      style={{ width: '150px', height: 'auto' }}
+                      style={{ width: '100px', height: 'auto', marginRight: '20px' }}
                     />
                   </div>
                 </div>
               </div>
               <div className="card-action">
-                <a 
-                  href="#!" 
-                  style={{
-                    fontFamily: 'Fantasy, cursive',
-                    fontWeight: 'bold',
-                    color: '#83CC6D'
-                  }}
-                >
+                <CartoonyButton to="/" color="rgb(83, 211, 147)" size="medium" width="50%">
                   Claim Bounty
-                </a>
+                </CartoonyButton>
               </div>
             </div>
           </div>
