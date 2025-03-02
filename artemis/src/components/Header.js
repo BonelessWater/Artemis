@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import M from 'materialize-css';
 import 'materialize-css/dist/css/materialize.min.css';
+import { Link } from 'react-router-dom';
 
 // SosSlider Component – Slide from right to left to activate SOS mode
 const SosSlider = ({ onActivate }) => {
@@ -39,8 +40,7 @@ const SosSlider = ({ onActivate }) => {
       setHandleLeft((prev) => {
         let newLeft = (prev !== null ? prev + dx : 0);
         if (newLeft < 0) newLeft = 0;
-        if (newLeft > sliderWidth - handleWidth)
-          newLeft = sliderWidth - handleWidth;
+        if (newLeft > sliderWidth - handleWidth) newLeft = sliderWidth - handleWidth;
         return newLeft;
       });
       setStartX(e.clientX);
@@ -174,13 +174,13 @@ const Header = () => {
       {/* Sidenav for the dropdown sidebar */}
       <ul className="sidenav" id="mobile-menu">
         <li>
-          <a href="#!">Home</a>
+          <Link to="/">Home</Link>
         </li>
         <li>
-          <a href="#!">Settings</a>
+          <Link to="/settings">Settings</Link>
         </li>
         <li>
-          <a href="#!">Help</a>
+          <Link to="/help">Help</Link>
         </li>
         <li>
           {/* Replace the plain SOS button with the slider */}
