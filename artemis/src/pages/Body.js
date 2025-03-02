@@ -17,13 +17,7 @@ const dummyLeaderboard = [
   { rank: 5, name: 'Emma', score: 2500 }
 ];
 
-const dummyFriends = [
-  { name: 'Alpha' },
-  { name: 'Beta' },
-  { name: 'Gamma' },
-  { name: 'Delta' },
-  { name: 'Epsilon' },
-];
+
 
 const Leaderboard = () => {
   return (
@@ -67,6 +61,18 @@ const Leaderboard = () => {
 };
 
 const FriendsList = () => {
+  const [friends, setFriends] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/api/friends', { withCredentials: true })
+      .then(response => {
+        setFriends(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching friends:", error);
+      });
+  }, []);
+
   return (
     <div style={{
       backgroundColor: 'rgb(83, 211, 147)',
@@ -93,7 +99,7 @@ const FriendsList = () => {
           </tr>
         </thead>
         <tbody>
-          {dummyFriends.map((friend, index) => {
+          {friends.map((friend, index) => {
             const status = index < 3 ? 'Best Friend' : 'Friend';
             return (
               <tr key={friend.name} style={{ borderBottom: '1px solid #ddd' }}>
@@ -104,7 +110,7 @@ const FriendsList = () => {
                   {status}
                 </td>
               </tr>
-            );
+            )
           })}
         </tbody>
       </table>

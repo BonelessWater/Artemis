@@ -82,6 +82,13 @@ class User(UserMixin, db.Model):
         backref=db.backref('users', lazy='dynamic'),
         lazy='dynamic'
     )
+    
+    def is_friend(self, friend):
+        return friend in self.friends
+
+    def add_friend(self, friend):
+        if not self.is_friend(friend):
+            self.friends.append(friend)
 
 class Researcher(UserMixin, db.Model):
     __tablename__ = 'researcher'
@@ -116,6 +123,13 @@ def get_data():
     users = User.query.all()
     usernames = [user.username for user in users]
     return jsonify({"users": usernames})
+
+@app.route('/api/friends', methods=['GET', 'POST'])
+def friendlist():
+    if request.method == 'GET':
+        friends_list = current_user.friends.all()
+        friends_json = [{"name": friend.username} for friend in friends_list]
+        return friends_json
 
 @app.route('/register', methods=['POST'])
 def register():
