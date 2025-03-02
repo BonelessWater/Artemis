@@ -1,8 +1,9 @@
 // Body.jsx
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
 import ExperienceBar from './ExperienceBar';
 import CartoonyButton from './CartoonyButton';
-import { Link } from 'react-router-dom';
 
 // SosSlider Component – Slide from right to left to confirm SOS
 const SosSlider = ({ onConfirm }) => {
@@ -210,7 +211,7 @@ const DraggableCard = ({ children, onClose }) => {
         border: '1px solid #c3e6cb',
         borderRadius: '10px',
         padding: '10px',
-        zIndex: 1000, // ensure it appears on top
+        zIndex: 1000,
       }}
     >
       {children}
@@ -222,14 +223,34 @@ const DraggableCard = ({ children, onClose }) => {
 };
 
 const Body = () => {
-  // State to show/hide the SOS confirmation card
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showSosCard, setShowSosCard] = useState(false);
+
+  // Check authentication status when component mounts
+  useEffect(() => {
+    axios.get('http://localhost:5000/dashboard', { withCredentials: true })
+      .then((response) => {
+        // If we get a valid response, user is authenticated
+        setIsAuthenticated(true);
+      })
+      .catch((error) => {
+        console.error('Authentication check failed:', error);
+        // Redirect to login if not authenticated
+        navigate('/login');
+      });
+  }, [navigate]);
 
   // Called when the slider confirms the SOS action
   const handleSosConfirm = () => {
     alert('SOS Confirmed!');
     setShowSosCard(false);
   };
+
+  // While checking authentication, show a loading message
+  if (!isAuthenticated) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -246,8 +267,8 @@ const Body = () => {
               alt="Menu"
               style={{
                 position: 'relative',
-                top: '25px',  // adjust vertical position here
-                left: '-10px', // adjust horizontal position here
+                top: '25px',
+                left: '-10px',
                 width: '30px',
                 height: '30px'
               }}
@@ -262,8 +283,8 @@ const Body = () => {
               alt="Person"
               style={{
                 position: 'relative',
-                top: '25px',  // adjust vertical position here
-                left: '-15px', // adjust horizontal position here
+                top: '25px',
+                left: '-15px',
                 width: '30px',
                 height: '30px'
               }}
@@ -336,9 +357,9 @@ const Body = () => {
             <img
               src={process.env.PUBLIC_URL + "/images/trophy.webp"}
               alt="Trophy"
-              style={{ 
-                display: 'block', 
-                margin: '0 auto', 
+              style={{
+                display: 'block',
+                margin: '0 auto',
                 maxWidth: '250px',
                 boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.5)'
               }}
@@ -376,7 +397,6 @@ const Body = () => {
             </div>
           </DraggableCard>
         )}
-
       </div>
     </>
   );

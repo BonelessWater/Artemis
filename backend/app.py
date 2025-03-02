@@ -7,7 +7,8 @@ from flask import (
     request, 
     jsonify, 
     send_file, 
-    abort)
+    abort
+)
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
     LoginManager, 
@@ -15,7 +16,8 @@ from flask_login import (
     login_user, 
     logout_user, 
     login_required, 
-    current_user)
+    current_user
+)
 from sqlalchemy.orm import backref
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
@@ -29,8 +31,9 @@ load_dotenv()
 API_KEY = os.getenv("API_KEY")
 
 app = Flask(__name__, template_folder="../frontend")
-CORS(app)
+CORS(app, supports_credentials=True)
 
+# Ensure the instance folder exists
 try:
     os.makedirs(app.instance_path, exist_ok=True)
 except OSError:
@@ -42,18 +45,7 @@ app.config['SECRET_KEY'] = API_KEY
 
 db = SQLAlchemy(app)
 
-def create_db():
-    db_path = os.path.join(app.instance_path, 'users.db')
-    if not os.path.exists(db_path):
-        with app.app_context():
-            db.create_all()
-
-create_db()
-
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
-
+# Define association tables after initializing db
 friendship = db.Table('friendship',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id', primary_key=True)),
     db.Column('friend_id', db.Integer, db.ForeignKey('user.id', primary_key=True))
@@ -64,19 +56,20 @@ achieved = db.Table('achieved',
     db.Column('achievement_id', db.Integer, db.ForeignKey('achievement.id', primary_key=True))
 )
 
+# Define your models
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.String(300), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)  # Make sure this line exists!
+    password = db.Column(db.String(200), nullable=False)
 
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
 
     friends = db.relationship(
         'User', 
-        secondary='friendship',
+        secondary=friendship,
         primaryjoin=(id == friendship.c.user_id),
         secondaryjoin=(id == friendship.c.friend_id),
         backref='friend_users', 
@@ -95,7 +88,7 @@ class Researcher(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.String(300), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)  # Make sure this line exists!
+    password = db.Column(db.String(200), nullable=False)
 
 class Achievement(db.Model):
     __tablename__ = 'achievement'
@@ -104,24 +97,25 @@ class Achievement(db.Model):
     desc = db.Column(db.String(300), unique=True, nullable=False)
     level = db.Column(db.Integer, nullable=False)
 
+# Initialize login manager
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
-def create_db():
-    db_path = os.path.join(app.instance_path, 'users.db')
-    if not os.path.exists(db_path):
-        with app.app_context():
-            db.create_all()
+@login_manager.user_loader
+def load_user(user_id):
+    # Try to load a User first; if not found, you might extend this logic
+    return User.query.get(int(user_id))
 
-create_db()
+# Create all missing tables. This call is idempotent.
+with app.app_context():
+    db.create_all()
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
     users = User.query.all()
     usernames = [user.username for user in users]
     return jsonify({"users": usernames})
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -134,7 +128,7 @@ def register():
         return jsonify({"error": "Username already exists!"}), 400
 
     if user_type == 'special':
-        if not email.endswith('.edu') or email.endswith('.gov'):
+        if not (email.endswith('.edu') or email.endswith('.gov')):
             return jsonify({'message': "Invalid email; must end in .edu or .gov."})
         new_user = Researcher(username=username, email=email, password=password)
     else:
@@ -144,7 +138,6 @@ def register():
     db.session.commit()
 
     return jsonify({"message": "Registered successfully!"}), 201
-
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -162,7 +155,6 @@ def login():
             return jsonify({"message": "Login successful!"}), 200
 
     return jsonify({"error": "Invalid credentials"}), 401
-
 
 @app.route('/friends', methods=['GET', 'POST'])
 @login_required
@@ -191,7 +183,6 @@ def dashboard():
     else:
         return jsonify({"message": "Unexpected Error: You are logged in as nothing?"})
     
-
 @app.route('/logout')
 @login_required
 def logout():

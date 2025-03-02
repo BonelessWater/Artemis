@@ -2,11 +2,16 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import Login from './auth/Login';
+import Signup from './auth/Signup';
 import Body from './components/Body';
+
 import ResearchPage from './components/ResearchPage';
 import HelpPage from './components/HelpPage';
 import PrepPage from './components/PrepPage';
 import AcheivementPage from './components/AchievementPage';
+
 
 const SettingsPage = () => (
   <div className="container" style={{ marginTop: '30px' }}>
@@ -27,13 +32,19 @@ const App = () => (
   >
     <Router>
       <Routes>
+
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+
         <Route path="/" element={<Body />} />
+
         <Route path="/research" element={<ResearchPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/help" element={<HelpPage />} />
         <Route path="/prep" element={<PrepPage />} />
         <Route path="/achieve" element={<AcheivementPage />} />
         <Route path="/prep" element={<PrepPage />} />
+        
       </Routes>
     </Router>
   </div>

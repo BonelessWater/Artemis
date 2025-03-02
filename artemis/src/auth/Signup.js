@@ -1,32 +1,44 @@
-// Login.jsx
+// Signup.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import CartoonyButton from '../components/CartoonyButton';
 
-const Login = () => {
+const Signup = () => {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // "normal" corresponds to Hiker, "special" corresponds to Researcher
+  const [userType, setUserType] = useState('normal');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
+    // Create FormData since the backend expects form data
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('user_type', userType);
 
     try {
-      const response = await axios.post(
-        'http://localhost:5000/login',
-        { username, password },
-        { withCredentials: true }
-      );
+      const response = await axios.post('http://localhost:5000/register', formData, {
+        withCredentials: true,
+      });
 
-      if (response.status === 200) {
-        setMessage('Login successful!');
-        navigate('/'); // redirect to main page after login
+      if (response.status === 201) {
+        setMessage('Registration successful! Please log in.');
+        // Redirect to login page after successful registration
+        navigate('/login');
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      setMessage('Invalid credentials or error during login.');
+    } catch (err) {
+      if (err.response && err.response.data) {
+        setMessage(err.response.data.error || err.response.data.message);
+      } else {
+        setMessage('Registration failed. Please try again.');
+      }
     }
   };
 
@@ -62,8 +74,9 @@ const Login = () => {
             flexGrow: 1,
           }}
         >
-          Log In
+          Sign Up
         </h1>
+        {/* Spacer div for alignment */}
         <div style={{ width: "90px" }}></div>
       </div>
 
@@ -78,7 +91,7 @@ const Login = () => {
           textAlign: 'center',
         }}
       >
-        <h2>Log In to Your Account</h2>
+        <h2>Create Your Account</h2>
         {message && <p>{message}</p>}
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '10px' }}>
@@ -96,7 +109,35 @@ const Login = () => {
               type="text" 
               value={username}
               onChange={e => setUsername(e.target.value)} 
-              required
+              required 
+              style={{
+                width: '100%',
+                padding: '8px',
+                marginTop: '5px',
+                color: 'white',
+                backgroundColor: 'rgba(0,0,0,0.2)',
+                border: 'none',
+                borderRadius: '4px',
+                textAlign: 'center'
+              }}
+            />
+          </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label
+              style={{
+                color: 'white',
+                display: 'block',
+                marginBottom: '5px',
+                textAlign: 'center'
+              }}
+            >
+              Email:
+            </label>
+            <input 
+              type="email" 
+              value={email}
+              onChange={e => setEmail(e.target.value)} 
+              required 
               style={{
                 width: '100%',
                 padding: '8px',
@@ -124,7 +165,7 @@ const Login = () => {
               type="password" 
               value={password}
               onChange={e => setPassword(e.target.value)} 
-              required
+              required 
               style={{
                 width: '100%',
                 padding: '8px',
@@ -137,18 +178,49 @@ const Login = () => {
               }}
             />
           </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label
+              style={{
+                color: 'white',
+                display: 'block',
+                marginBottom: '5px',
+                textAlign: 'center'
+              }}
+            >
+              User Type:
+            </label>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+              <CartoonyButton 
+                onClick={() => setUserType("normal")}
+                // Show primary color if active, grey if not
+                color={userType === "normal" ? "rgb(92, 229, 206)" : "grey"}
+                size="medium"
+                width="auto"
+              >
+                Hiker
+              </CartoonyButton>
+              <CartoonyButton 
+                onClick={() => setUserType("special")}
+                color={userType === "special" ? "rgb(83, 211, 147)" : "grey"}
+                size="medium"
+                width="auto"
+              >
+                Researcher
+              </CartoonyButton>
+            </div>
+          </div>
           <div style={{ textAlign: 'center', marginTop: '20px' }}>
             <CartoonyButton type="submit" color="rgb(83, 211, 147)" size="large" width="auto">
-              Log In
+              Register
             </CartoonyButton>
           </div>
         </form>
         <p style={{ marginTop: '15px' }}>
-          Don't have an account? <Link to="/signup">Sign up here</Link>
+          Already have an account? <Link to="/login">Log in here</Link>
         </p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Signup;
