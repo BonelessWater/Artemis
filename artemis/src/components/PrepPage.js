@@ -81,7 +81,7 @@ const DiscussionForum = () => {
             <ul>
               {selectedPost.comments.map((comment, index) => (
                 <li key={index} style={{ marginBottom: "5px" }}>
-                  <strong>{comment.user}:</strong> {comnt.text}
+                  <strong>{comment.user}:</strong> {comment.text}
                   {comment.image && <img src={comment.image} alt="User Upload" style={{ display: "block", maxWidth: "100px", marginTop: "5px" }} />}
                 </li>
               ))}

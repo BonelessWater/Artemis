@@ -275,16 +275,18 @@ const Body = () => {
       <div className="container center-align" style={{ marginTop: '30px' }}>
         {/* Trophy Image Above the Buttons */}
         <div style={{ marginBottom: '20px' }}>
-          <img
-            src={process.env.PUBLIC_URL + "/images/trophy.webp"}
-            alt="Trophy"
-            style={{ 
-              display: 'block', 
-              margin: '0 auto', 
-              maxWidth: '250px',
-              boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.5)'
-            }}
-          />
+          <Link to="/achieve">
+            <img
+              src={process.env.PUBLIC_URL + "/images/trophy.webp"}
+              alt="Trophy"
+              style={{ 
+                display: 'block', 
+                margin: '0 auto', 
+                maxWidth: '250px',
+                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.5)'
+              }}
+            />
+          </Link>
         </div>
 
         {/* Bounty Button using CartoonyButton */}
