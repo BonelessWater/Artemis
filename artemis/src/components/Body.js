@@ -1,6 +1,6 @@
-// src/Body.js
 import React, { useState, useEffect, useRef } from 'react';
-import ExperienceBar  from './ExperienceBar';
+import { Link } from 'react-router-dom';
+import ExperienceBar from './ExperienceBar';
 
 // SosSlider Component – Slide from right to left to confirm SOS
 const SosSlider = ({ onConfirm }) => {
@@ -113,12 +113,8 @@ const Body = () => {
   };
 
   return (
-    <>  
-      <div class="col s12">
-        <div class="col s8">
-          <ExperienceBar current={350} max={500} level={5} />
-        </div>
-      </div>
+    <>
+      <ExperienceBar current={350} max={500} level={5} />
       <div className="container center-align" style={{ marginTop: '30px' }}>
         {/* Trophy Image Above the Buttons */}
         <div style={{ marginBottom: '20px' }}>
@@ -137,28 +133,32 @@ const Body = () => {
         {/* Three buttons next to each other */}
         <div className="row" style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
           <div className="col s4">
-            <button
-              className="btn-large"
-              style={{ 
-                backgroundColor: 'rgb(83, 211, 147)', 
-                width: '100%',
-                fontSize: '35px'
-              }}
-            >
-              Help
-            </button>
+            <Link to="/help" style={{ width: '100%' }}>
+              <button
+                className="btn-large"
+                style={{ 
+                  backgroundColor: 'rgb(83, 211, 147)', 
+                  width: '100%',
+                  fontSize: '35px'
+                }}
+              >
+                Help
+              </button>
+            </Link>
           </div>
           <div className="col s4">
-            <button 
-              className="btn-large" 
-              style={{ 
-                backgroundColor: 'rgb(83, 211, 147)', 
-                width: '100%',
-                fontSize: '35px'
-              }}
-            >
-              Prep
-            </button>
+            <Link to="/prep" style={{ width: '100%' }}>
+              <button 
+                className="btn-large" 
+                style={{ 
+                  backgroundColor: 'rgb(83, 211, 147)', 
+                  width: '100%',
+                  fontSize: '35px'
+                }}
+              >
+                Prep
+              </button>
+            </Link>
           </div>
           <div className="col s4">
             <button

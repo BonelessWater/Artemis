@@ -170,5 +170,12 @@ def logout():
     logout_user()
     return jsonify({"message": "Logout successful!"})
 
+@app.route('/LLM_chat')
+def LLM_Chat():
+    prompt = request.args.get("prompt")
+    model = Model(wifi=True)
+    answer = model.reply(prompt)
+    return jsonify(answer)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
