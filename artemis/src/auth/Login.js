@@ -87,7 +87,8 @@ const Login = () => {
                 color: 'white',
                 display: 'block',
                 marginBottom: '5px',
-                textAlign: 'center'
+                textAlign: 'center',
+                fontSize: '1.2rem'  // Increased font size for the label
               }}
             >
               Username:
@@ -115,7 +116,8 @@ const Login = () => {
                 color: 'white',
                 display: 'block',
                 marginBottom: '5px',
-                textAlign: 'center'
+                textAlign: 'center',
+                fontSize: '1.2rem'  // Increased font size for the label
               }}
             >
               Password:

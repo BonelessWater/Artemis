@@ -12,13 +12,7 @@ import HelpPage from './components/HelpPage';
 import PrepPage from './components/PrepPage';
 import AcheivementPage from './components/AchievementPage';
 
-
-const SettingsPage = () => (
-  <div className="container" style={{ marginTop: '30px' }}>
-    <h3>Settings</h3>
-    <p>Settings page content goes here.</p>
-  </div>
-);
+import 'materialize-css/dist/css/materialize.min.css';
 
 const App = () => (
   <div
@@ -39,12 +33,11 @@ const App = () => (
         <Route path="/" element={<Body />} />
 
         <Route path="/research" element={<ResearchPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
         <Route path="/help" element={<HelpPage />} />
         <Route path="/prep" element={<PrepPage />} />
         <Route path="/achieve" element={<AcheivementPage />} />
         <Route path="/prep" element={<PrepPage />} />
-        
+
       </Routes>
     </Router>
   </div>

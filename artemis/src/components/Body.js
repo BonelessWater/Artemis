@@ -4,8 +4,8 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import ExperienceBar from './ExperienceBar';
 import CartoonyButton from './CartoonyButton';
+import Sidebar from './Sidebar';
 
-// SosSlider Component – Slide from right to left to confirm SOS
 const SosSlider = ({ onConfirm }) => {
   const sliderRef = useRef(null);
   const handleRef = useRef(null);
@@ -13,7 +13,6 @@ const SosSlider = ({ onConfirm }) => {
   const [startX, setStartX] = useState(0);
   const [handleLeft, setHandleLeft] = useState(null);
 
-  // Set initial handle position (right aligned)
   useEffect(() => {
     if (sliderRef.current && handleRef.current) {
       const sliderWidth = sliderRef.current.offsetWidth;
@@ -37,7 +36,6 @@ const SosSlider = ({ onConfirm }) => {
     }
   };
 
-  // Mouse handlers
   const onMouseDown = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -60,7 +58,6 @@ const SosSlider = ({ onConfirm }) => {
     if (handleLeft !== null && handleLeft < 20) {
       if (onConfirm) onConfirm();
     } else {
-      // Reset handle to right side
       if (sliderRef.current && handleRef.current) {
         const sliderWidth = sliderRef.current.offsetWidth;
         const handleWidth = handleRef.current.offsetWidth;
@@ -69,7 +66,6 @@ const SosSlider = ({ onConfirm }) => {
     }
   };
 
-  // Touch handlers
   const onTouchStart = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -92,7 +88,6 @@ const SosSlider = ({ onConfirm }) => {
     if (handleLeft !== null && handleLeft < 20) {
       if (onConfirm) onConfirm();
     } else {
-      // Reset handle to right side
       if (sliderRef.current && handleRef.current) {
         const sliderWidth = sliderRef.current.offsetWidth;
         const handleWidth = handleRef.current.offsetWidth;
@@ -150,7 +145,6 @@ const DraggableCard = ({ children, onClose }) => {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
-  // Center card on initial render
   useEffect(() => {
     if (cardRef.current) {
       const cardWidth = cardRef.current.offsetWidth;
@@ -226,41 +220,55 @@ const Body = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showSosCard, setShowSosCard] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Check authentication status when component mounts
   useEffect(() => {
     axios.get('http://localhost:5000/dashboard', { withCredentials: true })
       .then((response) => {
-        // If we get a valid response, user is authenticated
         setIsAuthenticated(true);
       })
       .catch((error) => {
         console.error('Authentication check failed:', error);
-        // Redirect to login if not authenticated
         navigate('/login');
       });
   }, [navigate]);
 
-  // Called when the slider confirms the SOS action
   const handleSosConfirm = () => {
     alert('SOS Confirmed!');
     setShowSosCard(false);
   };
 
-  // While checking authentication, show a loading message
   if (!isAuthenticated) {
     return <div>Loading...</div>;
   }
 
   return (
     <>
+      {/* Overlay to close sidebar when clicked */}
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0,0,0,0.3)',
+            zIndex: 1500,
+          }}
+        ></div>
+      )}
+
+      {/* Render the sidebar if open */}
+      {sidebarOpen && <Sidebar onClose={() => setSidebarOpen(false)} />}
+
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <ExperienceBar current={350} max={500} level={5} />
-
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <button
             style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
-            onClick={() => console.log('Menu clicked')}
+            onClick={() => setSidebarOpen(true)}
           >
             <img
               src="/images/menu.png"
@@ -293,7 +301,6 @@ const Body = () => {
         </div>
       </div>
 
-      {/* Three buttons next to each other */}
       <div className="row" style={{ marginTop: '35px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
         <div className="col s4">
           <CartoonyButton to="/prep" color="rgb(83, 211, 147)" size="large" width="100%">
@@ -351,7 +358,6 @@ const Body = () => {
       </div>
 
       <div className="container center-align" style={{ marginTop: '30px' }}>
-        {/* Trophy Image Above the Buttons */}
         <div style={{ marginBottom: '20px' }}>
           <Link to="/achieve">
             <img
@@ -367,7 +373,6 @@ const Body = () => {
           </Link>
         </div>
 
-        {/* Bounty Button using CartoonyButton */}
         <div style={{ marginBottom: '20px', textAlign: 'center' }}>
           <CartoonyButton to="/research" color="rgb(239, 221, 121)" size="large" width="auto">
             Bounty
@@ -385,7 +390,6 @@ const Body = () => {
           </CartoonyButton>
         </div>
       
-        {/* Conditionally render the SOS confirmation card */}
         {showSosCard && (
           <DraggableCard onClose={() => setShowSosCard(false)}>
             <div className="card-content">

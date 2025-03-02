@@ -100,7 +100,8 @@ const Signup = () => {
                 color: 'white',
                 display: 'block',
                 marginBottom: '5px',
-                textAlign: 'center'
+                textAlign: 'center',
+                fontSize: '1.2rem'
               }}
             >
               Username:
@@ -128,7 +129,8 @@ const Signup = () => {
                 color: 'white',
                 display: 'block',
                 marginBottom: '5px',
-                textAlign: 'center'
+                textAlign: 'center',
+                fontSize: '1.2rem'
               }}
             >
               Email:
@@ -156,7 +158,8 @@ const Signup = () => {
                 color: 'white',
                 display: 'block',
                 marginBottom: '5px',
-                textAlign: 'center'
+                textAlign: 'center',
+                fontSize: '1.2rem'
               }}
             >
               Password:
@@ -184,7 +187,8 @@ const Signup = () => {
                 color: 'white',
                 display: 'block',
                 marginBottom: '5px',
-                textAlign: 'center'
+                textAlign: 'center',
+                fontSize: '1.2rem'
               }}
             >
               User Type:
@@ -192,7 +196,6 @@ const Signup = () => {
             <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
               <CartoonyButton 
                 onClick={() => setUserType("normal")}
-                // Show primary color if active, grey if not
                 color={userType === "normal" ? "rgb(92, 229, 206)" : "grey"}
                 size="medium"
                 width="auto"
