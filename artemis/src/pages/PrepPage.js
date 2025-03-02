@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import CartoonyButton from "../components/CartoonyButton";
 
 const DiscussionForum = () => {
   // Define an array of random usernames to use
@@ -97,19 +98,63 @@ const DiscussionForum = () => {
   const darkGrey = "#444444";
 
   return (
-    <div className="min-height-100vh" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingTop: "80px", width: "100%", maxWidth: "100vw" }}>
-      {/* Header section */}
-      <div className="white center-align z-depth-1" style={{ position: "fixed", top: 0, left: 0, width: "100%", padding: "16px", borderBottom: "2px solid black", background: "white", zIndex: 10, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
-        <button onClick={() => window.location.href = "http://localhost:3000/"} style={{ background: "black", color: "white", border: "none", padding: "10px 20px", cursor: "pointer", borderRadius: "5px", fontSize: "1rem", flexShrink: 0 }}>
+    <div 
+      className="min-height-100vh" 
+      style={{ 
+        display: "flex", 
+        flexDirection: "column", 
+        alignItems: "center", 
+        justifyContent: "center", 
+        paddingTop: "30px", 
+        width: "100%", 
+        maxWidth: "100vw" 
+      }}
+    >
+      {/* Updated Header section matching ResearchPage */}
+      <div 
+        className="white-header" 
+        style={{ 
+          background: 'white',
+          padding: '0px 20px',
+          marginBottom: '20px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%'
+        }}
+      >
+        <CartoonyButton to="/" color="rgb(83, 211, 147)" size="medium" width="auto">
           Back
-        </button>
-        <h1 className="black-text" style={{ fontWeight: "bold", fontSize: "2.5rem", textAlign: "center", flexGrow: 1, minWidth: "200px" }}>F&Q</h1>
+        </CartoonyButton>
+        <h1 
+          style={{
+            margin: 0,
+            fontFamily: 'Fantasy, cursive',
+            color: 'black',
+            textAlign: 'center',
+            flexGrow: 1
+          }}
+        >
+          Prep
+        </h1>
+        <div style={{ width: '90px' }}></div>
       </div>
 
       {/* Discussion Forum Posts */}
-      <div style={{ width: "90%", maxWidth: "800px", marginTop: "100px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div 
+        style={{ 
+          width: "90%", 
+          maxWidth: "800px", 
+          marginTop: "20px", 
+          display: "flex", 
+          flexDirection: "column", 
+          alignItems: "center" 
+        }}
+      >
         {posts.map(post => (
-          <button key={post.id} onClick={() => handlePostClick(post)} 
+          <button 
+            key={post.id} 
+            onClick={() => handlePostClick(post)} 
             style={{ 
               background: "white", 
               padding: "20px", 
@@ -125,7 +170,8 @@ const DiscussionForum = () => {
               justifyContent: "space-between",
               position: "relative",
               minHeight: "120px"
-            }}>
+            }}
+          >
             <div style={{ 
               flex: "1", 
               minWidth: "0", 
@@ -143,7 +189,9 @@ const DiscussionForum = () => {
               }}>
                 {truncateText(post.title, 30)}
               </h2>
-              <p style={{ fontSize: "1rem", fontWeight: "bold", color: "rgba(0, 0, 0, 1)", marginBottom: "5px" }}>Description:</p>
+              <p style={{ fontSize: "1rem", fontWeight: "bold", color: "rgba(0, 0, 0, 1)", marginBottom: "5px" }}>
+                Description:
+              </p>
               <p style={{ 
                 fontSize: "1rem", 
                 color: "rgba(0, 0, 0, 1)", 
@@ -174,25 +222,50 @@ const DiscussionForum = () => {
         ))}
       </div>
 
-      {/* Full Page Popup Window */}
+      {/* Full Page Popup Window for Post Comments */}
       {selectedPost && (
-        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "white", color: darkGrey, padding: "20px", textAlign: "left", zIndex: 20, overflowY: "auto" }}>
-          <h2 style={{ fontSize: "2rem", fontWeight: "bold", marginBottom: "10px", color: darkGrey }}>{selectedPost.title}</h2>
-          <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "5px", color: darkGrey }}>Description:</p>
-          <p style={{ fontSize: "1.2rem", marginBottom: "10px", color: darkGrey }}>{selectedPost.description}</p>
+        <div 
+          style={{ 
+            position: "fixed", 
+            top: 0, 
+            left: 0, 
+            width: "100%", 
+            height: "100%", 
+            background: "white", 
+            color: darkGrey, 
+            padding: "20px", 
+            textAlign: "left", 
+            zIndex: 20, 
+            overflowY: "auto" 
+          }}
+        >
+          <h2 style={{ fontSize: "2rem", fontWeight: "bold", marginBottom: "10px", color: darkGrey }}>
+            {selectedPost.title}
+          </h2>
+          <p style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "5px", color: darkGrey }}>
+            Description:
+          </p>
+          <p style={{ fontSize: "1.2rem", marginBottom: "10px", color: darkGrey }}>
+            {selectedPost.description}
+          </p>
 
           {/* Comments Section */}
           <div style={{ marginTop: "20px" }}>
-            <h3 style={{ fontSize: "1.5rem", fontWeight: "bold", color: darkGrey }}>Comments:</h3>
+            <h3 style={{ fontSize: "1.5rem", fontWeight: "bold", color: darkGrey }}>
+              Comments:
+            </h3>
             <ul style={{ listStyleType: "none", padding: 0 }}>
               {tempComments.map((comment, index) => (
-                <li key={index} style={{ 
-                  marginBottom: "15px", 
-                  color: darkGrey,
-                  padding: "10px",
-                  borderLeft: "3px solid #888",
-                  backgroundColor: "#f8f8f8"
-                }}>
+                <li 
+                  key={index} 
+                  style={{ 
+                    marginBottom: "15px", 
+                    color: darkGrey,
+                    padding: "10px",
+                    borderLeft: "3px solid #888",
+                    backgroundColor: "#f8f8f8"
+                  }}
+                >
                   <div style={{ 
                     fontSize: "1.1rem", 
                     color: darkGrey, 
@@ -201,8 +274,16 @@ const DiscussionForum = () => {
                   }}>
                     {comment.user}:
                   </div>
-                  <div style={{ fontSize: "1rem", color: darkGrey }}>{comment.text}</div>
-                  {comment.image && <img src={comment.image} alt="User Upload" style={{ display: "block", maxWidth: "100px", marginTop: "5px" }} />}
+                  <div style={{ fontSize: "1rem", color: darkGrey }}>
+                    {comment.text}
+                  </div>
+                  {comment.image && 
+                    <img 
+                      src={comment.image} 
+                      alt="User Upload" 
+                      style={{ display: "block", maxWidth: "100px", marginTop: "5px" }} 
+                    />
+                  }
                 </li>
               ))}
             </ul>
@@ -210,13 +291,51 @@ const DiscussionForum = () => {
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Write a comment..."
-              style={{ width: "100%", padding: "10px", marginTop: "10px", color: darkGrey, background: "white", border: "1px solid #888" }}
+              style={{ 
+                width: "100%", 
+                padding: "10px", 
+                marginTop: "10px", 
+                color: darkGrey, 
+                background: "white", 
+                border: "1px solid #888" 
+              }}
             ></textarea>
-            <input type="file" accept="image/*" onChange={handleImageUpload} style={{ marginTop: "10px", color: darkGrey }} />
-            <button onClick={handleAddComment} style={{ marginTop: "10px", background: "black", color: "white", border: "none", padding: "5px 10px", cursor: "pointer", borderRadius: "3px" }}>Post Comment</button>
+            <input 
+              type="file" 
+              accept="image/*" 
+              onChange={handleImageUpload} 
+              style={{ marginTop: "10px", color: darkGrey }} 
+            />
+            <button 
+              onClick={handleAddComment} 
+              style={{ 
+                marginTop: "10px", 
+                background: "black", 
+                color: "white", 
+                border: "none", 
+                padding: "5px 10px", 
+                cursor: "pointer", 
+                borderRadius: "3px" 
+              }}
+            >
+              Post Comment
+            </button>
           </div>
 
-          <button onClick={closePopup} style={{ marginTop: "20px", background: "black", color: "white", border: "none", padding: "10px 20px", cursor: "pointer", borderRadius: "5px" }}>Close</button>
+          <button 
+            onClick={closePopup} 
+            style={{ 
+              marginTop: "20px", 
+              background: "black", 
+              color: "white", 
+              border: "none", 
+              padding: "10px 20px", 
+              cursor: "pointer", 
+              borderRadius: "5px" 
+            }}
+          >
+            Close
+          </button>
         </div>
       )}
     </div>

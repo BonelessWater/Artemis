@@ -220,22 +220,4 @@ def prep():
         
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-    '''
-    from twilio.rest import Client
-    load_dotenv()
-    # Replace these with your Twilio credentials
-    account_sid = os.getenv("ACCOUNT_SID")
-    auth_token = os.getenv("AUTH_TOKEN")
-    client = Client(account_sid, auth_token)
-
-    # Create a call
-    call = client.calls.create(
-        to='+17866473624',         # The number you want to call
-        from_='+13526656965',      # Your Twilio phone number
-        url='http://demo.twilio.com/docs/voice.xml'  # URL with TwiML instructions for the call
-    )
-
-    print(f"Call initiated. SID: {call.sid}")
-    '''
-    
 

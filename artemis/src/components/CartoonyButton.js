@@ -1,4 +1,3 @@
-// CartoonyButton.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -10,6 +9,7 @@ const CartoonyButton = ({
   size = 'medium', // default size
   height, // new prop for height
   width,  // new prop for width
+  movement = true, // new prop for movement; defaults to true
   style: customStyle = {},
   ...rest
 }) => {
@@ -27,7 +27,7 @@ const CartoonyButton = ({
       padding: '15px 30px',
       fontSize: '22px',
     },
-    large2:  {
+    large2: {
       padding: '25px 40px',
       fontSize: '40px',
     },
@@ -41,6 +41,22 @@ const CartoonyButton = ({
     ...(width ? { width } : {}),
     ...customStyle,
   };
+
+  // If movement is enabled, add a pulse animation with a rest period
+  const movementStyle = movement ? { animation: "pulse 4s infinite" } : {};
+
+  // Clone children to apply spin animation on any img element if movement is true
+  const enhancedChildren = React.Children.map(children, child => {
+    if (React.isValidElement(child) && child.type === 'img') {
+      return React.cloneElement(child, {
+        style: {
+          ...child.props.style,
+          animation: movement ? "starSpin 4s infinite" : "none",
+        },
+      });
+    }
+    return child;
+  });
 
   return (
     <>
@@ -56,7 +72,6 @@ const CartoonyButton = ({
           transition: background-color 0.3s ease;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
-        /* Sweeping shine effect on hover */
         .cartoony-btn::before {
           content: "";
           position: absolute;
@@ -77,7 +92,6 @@ const CartoonyButton = ({
           50% { width: 200%; }
           100% { width: 0; }
         }
-        /* Animated thin shine lines */
         .shine-lines {
           position: absolute;
           top: 0;
@@ -109,7 +123,6 @@ const CartoonyButton = ({
           50% { left: 50%; opacity: 1; }
           100% { left: 100%; opacity: 0; }
         }
-        /* Animated glare rectangle that appears then leaves */
         .glare-rect {
           position: absolute;
           right: 0;
@@ -139,6 +152,20 @@ const CartoonyButton = ({
             transform: translateX(-100%) skewX(-20deg);
           }
         }
+        /* Pulse animation with a rest period */
+        @keyframes pulse {
+          0% { transform: scale(1); }
+          25% { transform: scale(1.1); }
+          50% { transform: scale(1); }
+          100% { transform: scale(1); }
+        }
+        /* Star spin animation that spins only during the growth phase (0% to 25%) */
+        @keyframes starSpin {
+          0% { transform: rotate(0deg); }
+          25% { transform: rotate(360deg); }
+          26% { transform: rotate(360deg); }
+          100% { transform: rotate(360deg); }
+        }
       `}</style>
       {to ? (
         <Link to={to} style={{ textDecoration: 'none' }}>
@@ -146,9 +173,9 @@ const CartoonyButton = ({
             className="cartoony-btn"
             onClick={onClick}
             {...rest}
-            style={buttonStyle}
+            style={{ ...buttonStyle, ...movementStyle }}
           >
-            {children}
+            {enhancedChildren}
             <div className="shine-lines">
               <div className="shine-line"></div>
               <div className="shine-line"></div>
@@ -161,9 +188,9 @@ const CartoonyButton = ({
           className="cartoony-btn"
           onClick={onClick}
           {...rest}
-          style={buttonStyle}
+          style={{ ...buttonStyle, ...movementStyle }}
         >
-          {children}
+          {enhancedChildren}
           <div className="shine-lines">
             <div className="shine-line"></div>
             <div className="shine-line"></div>
