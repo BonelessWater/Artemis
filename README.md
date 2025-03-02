@@ -2,6 +2,8 @@
 
 **Enhancing the hiking experience and promoting environmentalism**
 
+*Welcome to our Hackathon submission*
+
 Artemis is a revolutionary mobile application designed by hikers, for hikers. Built using React Native and Flask, Artemis empowers outdoor enthusiasts with tailored features that enhance their connection with nature while motivating sustainable practices and environmental awareness.
 
 ---
@@ -150,14 +152,6 @@ Once the servers are running, Artemis is ready to accompany you on your hikes. E
 - Collaborating with researchers by collecting environmental samples
 
 ---
-
-## Troubleshooting
-
-- Virtual Environment: Ensure the virtual environment is activated before installing dependencies.
-- Dependency Issues: Confirm that you are using the correct versions of Python, Node.js, and npm.
-- Server Problems: Check that both servers are running on the designated ports Review terminal output for error messages.
-
-For additional help, refer to our Contributing section or open an issue in the repository.
 
 ## Contributing
 
