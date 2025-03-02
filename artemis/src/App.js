@@ -7,6 +7,7 @@ import ResearchPage from './components/ResearchPage';
 import HelpPage from './components/HelpPage';
 import PrepPage from './components/PrepPage';
 import AcheivementPage from './components/AchievementPage';
+import PrepPage from './components/PrepPage';
 
 const SettingsPage = () => (
   <div className="container" style={{ marginTop: '30px' }}>
@@ -33,6 +34,7 @@ const App = () => (
         <Route path="/help" element={<HelpPage />} />
         <Route path="/prep" element={<PrepPage />} />
         <Route path="/achieve" element={<AcheivementPage />} />
+        <Route path="/prep" element={<PrepPage />} />
       </Routes>
     </Router>
   </div>
