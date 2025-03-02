@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import CartoonyButton from "./CartoonyButton";
 
 const Achievements = () => {
@@ -71,7 +70,6 @@ const Achievements = () => {
           justifyContent: "center",
         }}
       >
-        {/* Achievement images in a BST layout */}
         {/* Root Node */}
         <button
           onClick={() =>
@@ -89,9 +87,24 @@ const Achievements = () => {
           <img
             src="/images/tree.png"
             alt="Tree Achievement"
-            style={{ width: "80px", height: "80px" }}
+            style={{
+              width: "80px",
+              height: "80px",
+              transform: "scale(1)",
+              transformOrigin: "center"
+            }}
           />
         </button>
+
+
+        {/* Arrow between Root and Level 1 */}
+        <div style={{ marginTop: "40px", textAlign: "center" }}>
+          <img
+            src="/images/arrow_down.png"
+            alt="Arrow"
+            style={{ width: "50px", height: "auto" }}
+          />
+        </div>
 
         {/* Level 1 */}
         <div
@@ -118,13 +131,16 @@ const Achievements = () => {
             <img
               src="/images/fire.png"
               alt="Fire Achievement"
-              style={{ width: "80px", height: "80px" }}
+              style={{ 
+                width: "80px", 
+                height: "80px", 
+                transform: "scale(1.5)",
+                transformOrigin: "center"
+              }}
             />
           </button>
           <button
-            onClick={() =>
-              handleClick("Fish", "Caught a fish in the wild!")
-            }
+            onClick={() => handleClick("Fish", "Caught a fish in the wild!")}
             style={{
               background: "url('/images/oak-wood-texture.png')",
               backgroundSize: "cover",
@@ -137,9 +153,23 @@ const Achievements = () => {
             <img
               src="/images/fish.png"
               alt="Fish Achievement"
-              style={{ width: "80px", height: "80px" }}
+              style={{ 
+                width: "80px", 
+                height: "80px",
+                transform: "scale(1.1)",
+                transformOrigin: "center"
+               }}
             />
           </button>
+        </div>
+
+        {/* Arrow between Level 1 and Level 2 */}
+        <div style={{ marginTop: "60px", textAlign: "center" }}>
+          <img
+            src="/images/arrow_down.png"
+            alt="Arrow"
+            style={{ width: "50px", height: "auto" }}
+          />
         </div>
 
         {/* Level 2 */}
@@ -147,16 +177,13 @@ const Achievements = () => {
           style={{
             display: "flex",
             justifyContent: "center",
-            gap: "300px",
+            gap: "150px",
             marginTop: "40px",
           }}
         >
           <button
             onClick={() =>
-              handleClick(
-                "Shit",
-                "An unexpected encounter with nature!"
-              )
+              handleClick("Shit", "An unexpected encounter with nature!")
             }
             style={{
               background: "url('/images/oak-wood-texture.png')",
@@ -170,7 +197,12 @@ const Achievements = () => {
             <img
               src="/images/shit.png"
               alt="Shit Achievement"
-              style={{ width: "80px", height: "80px" }}
+              style={{ 
+                width: "80px", 
+                height: "80px",
+                transform: "scale(1)",
+                transformOrigin: "center"
+               }}
             />
           </button>
           <button
@@ -189,7 +221,12 @@ const Achievements = () => {
             <img
               src="/images/water.png"
               alt="Water Achievement"
-              style={{ width: "80px", height: "80px" }}
+              style={{ 
+                width: "80px", 
+                height: "80px",
+                transform: "scale(1.5)",
+                transformOrigin: "center"
+               }}
             />
           </button>
         </div>
@@ -239,20 +276,9 @@ const Achievements = () => {
 
       {/* OK Button to return to Home */}
       <div style={{ marginTop: "20px" }}>
-        <Link to="/">
-          <button
-            style={{
-              background: "rgb(83, 211, 147)",
-              color: "white",
-              border: "none",
-              padding: "10px 20px",
-              cursor: "pointer",
-              borderRadius: "5px",
-            }}
-          >
-            OK
-          </button>
-        </Link>
+        <CartoonyButton to="/" color="rgb(224, 87, 87)" size="medium" width="auto">
+          OK
+        </CartoonyButton>
       </div>
     </div>
   );

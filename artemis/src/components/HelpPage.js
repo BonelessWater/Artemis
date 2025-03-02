@@ -1,13 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import FileAutocomplete from "./FileAutocomplete";
+import CartoonyButton from "./CartoonyButton";
 
 // Helper function to format the output string
 const formatOutput = (text) => {
-  // Remove leading and trailing double quotes if present
   if (text.startsWith('"') && text.endsWith('"')) {
     text = text.slice(1, -1);
   }
-  // Replace literal "\n" with actual newline characters
   return text.replace(/\\n/g, "\n");
 };
 
@@ -19,31 +18,18 @@ const ChatBox = () => {
 
   const sendMessage = async () => {
     if (input.trim() === "") return;
-
-    // Append user message immediately
     const userMessage = input.trim();
-    setMessages((prev) => [
-      ...prev,
-      { sender: "user", text: userMessage },
-    ]);
+    setMessages((prev) => [...prev, { sender: "user", text: userMessage }]);
     setInput("");
 
     try {
-      // Fetch response from Flask endpoint, sending the user's message as a query parameter
       const response = await fetch(`/LLM_chat?prompt=${encodeURIComponent(userMessage)}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       const answer = await response.text();
-
-      // Process the output to format newlines and remove extra quotes
       const formattedAnswer = formatOutput(answer);
-
-      // Append the model's response to the chat
-      setMessages((prev) => [
-        ...prev,
-        { sender: "model", text: formattedAnswer },
-      ]);
+      setMessages((prev) => [...prev, { sender: "model", text: formattedAnswer }]);
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prev) => [
@@ -53,7 +39,6 @@ const ChatBox = () => {
     }
   };
 
-  // Scroll to the bottom on new messages
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -69,10 +54,8 @@ const ChatBox = () => {
             key={index}
             style={{
               ...styles.messageBubble,
-              ...(msg.sender === "user"
-                ? styles.userBubble
-                : styles.modelBubble),
-              whiteSpace: "pre-wrap", // Ensures newline characters are rendered correctly
+              ...(msg.sender === "user" ? styles.userBubble : styles.modelBubble),
+              whiteSpace: "pre-wrap",
             }}
           >
             {msg.text}
@@ -99,21 +82,18 @@ const ChatBox = () => {
   );
 };
 
-
 const DataQuery = () => {
-  const [selectedFile, setSelectedFile] = useState("");
+  const [fileQuery, setFileQuery] = useState("");
   const [fileURL, setFileURL] = useState("");
 
-  const handleFileSelect = async (file) => {
-    setSelectedFile(file);
+  const handleSearchFile = async () => {
+    if (!fileQuery) return;
     try {
-      const response = await fetch(`/get_file?filepath=${encodeURIComponent(file)}`);
+      const response = await fetch(`/get_file?filepath=${encodeURIComponent(fileQuery)}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      // Get the file as a Blob
       const blob = await response.blob();
-      // Create a URL for the Blob so it can be rendered
       const url = URL.createObjectURL(blob);
       setFileURL(url);
     } catch (error) {
@@ -125,13 +105,19 @@ const DataQuery = () => {
   return (
     <div style={styles.dataQueryContainer}>
       <div style={styles.sectionHeader}>Data Query</div>
-      <FileAutocomplete onSelect={handleFileSelect} />
-      {selectedFile && fileURL && (
+      <div style={styles.searchContainer}>
+        <div style={styles.searchInputWrapper}>
+          <FileAutocomplete onSelect={(file) => setFileQuery(file)} />
+        </div>
+        <button onClick={handleSearchFile} style={styles.searchButton}>
+          Search
+        </button>
+      </div>
+      {fileQuery && fileURL && (
         <div>
-          <p>
-            Selected File: <strong>{selectedFile}</strong>
+          <p style={styles.fileInfo}>
+            Selected File: <strong>{fileQuery}</strong>
           </p>
-          {/* Display the PDF in an iframe */}
           <iframe 
             src={fileURL} 
             title="PDF Viewer" 
@@ -145,40 +131,97 @@ const DataQuery = () => {
   );
 };
 
+const HelpPage = () => {
+  const [activeMode, setActiveMode] = useState("chat");
 
-const HelpPage = () => (
-  <div style={styles.pageContainer}>
-    <h3 style={styles.pageHeader}>Help</h3>
-    <p style={styles.pageSubheader}>
-    </p>
-    <ChatBox />
-    <DataQuery />
-  </div>
-);
+  return (
+    <div style={styles.pageContainer}>
+      <div
+        className="white-header"
+        style={{
+          background: "white",
+          padding: "0px 20px",
+          marginBottom: "20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
+        <CartoonyButton to="/" color="rgb(83, 211, 147)" size="medium" width="auto">
+          Back
+        </CartoonyButton>
+        <h1
+          style={{
+            margin: 0,
+            fontFamily: "Fantasy, cursive",
+            color: "black",
+            textAlign: "center",
+            flexGrow: 1,
+          }}
+        >
+          Help
+        </h1>
+        <div style={{ width: "90px" }}></div>
+      </div>
+      <div style={styles.toggleContainer}>
+        <button
+          style={{
+            ...styles.toggleButton,
+            ...(activeMode === "chat" ? styles.activeToggle : {}),
+          }}
+          onClick={() => setActiveMode("chat")}
+        >
+          Chat
+        </button>
+        <button
+          style={{
+            ...styles.toggleButton,
+            ...(activeMode === "data" ? styles.activeToggle : {}),
+          }}
+          onClick={() => setActiveMode("data")}
+        >
+          Data Query
+        </button>
+      </div>
+      {activeMode === "chat" ? <ChatBox /> : <DataQuery />}
+    </div>
+  );
+};
 
-// Combined inline styles for the HelpPage, ChatBox, and DataQuery components
 const styles = {
   pageContainer: {
     maxWidth: "800px",
     margin: "30px auto",
     padding: "0 20px",
     fontFamily: "Arial, sans-serif",
-    color: "#333",
   },
-  pageHeader: {
-    textAlign: "center",
+  toggleContainer: {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "20px",
   },
-  pageSubheader: {
-    textAlign: "center",
-    color: "#666",
+  toggleButton: {
+    padding: "10px 20px",
+    margin: "0 5px",
+    border: "1px solid #007bff",
+    backgroundColor: "#fff",
+    color: "#007bff",
+    cursor: "pointer",
+    borderRadius: "4px",
   },
+  activeToggle: {
+    backgroundColor: "#007bff",
+    color: "#fff",
+  },
+  // Chat Box styles
   chatContainer: {
     border: "1px solid #e1e1e1",
     borderRadius: "8px",
     marginTop: "20px",
     display: "flex",
     flexDirection: "column",
-    height: "400px",
+    height: "600px", // Adjust this value to change chatbox height.
     overflow: "hidden",
     backgroundColor: "#fff",
   },
@@ -188,12 +231,13 @@ const styles = {
     borderBottom: "1px solid #e1e1e1",
     textAlign: "center",
     fontWeight: "bold",
+    color: "#000",
   },
   messagesContainer: {
     flex: 1,
     padding: "10px",
     overflowY: "auto",
-    backgroundColor: "#fafafa",
+    backgroundColor: "#fff",
   },
   messageBubble: {
     padding: "10px",
@@ -202,6 +246,7 @@ const styles = {
     maxWidth: "70%",
     lineHeight: "1.4",
     wordWrap: "break-word",
+    color: "#000",
   },
   userBubble: {
     backgroundColor: "#DCF8C6",
@@ -209,23 +254,27 @@ const styles = {
     marginLeft: "auto",
   },
   modelBubble: {
-    backgroundColor: "#fff",
+    backgroundColor: "#e1e1e1",
     border: "1px solid #e1e1e1",
     alignSelf: "flex-start",
     marginRight: "auto",
   },
   inputContainer: {
     display: "flex",
+    alignItems: "center",
     borderTop: "1px solid #e1e1e1",
     padding: "10px",
     backgroundColor: "#f7f7f8",
   },
+  // TALLER input field; adjust height here as needed.
   inputField: {
     flex: 1,
     padding: "10px",
+    height: "50px", // Increased height for the input textbox.
     borderRadius: "4px",
     border: "1px solid #ccc",
     marginRight: "10px",
+    color: "#000",
   },
   sendButton: {
     padding: "10px 20px",
@@ -235,8 +284,9 @@ const styles = {
     color: "#fff",
     cursor: "pointer",
   },
+  // Data Query styles
   dataQueryContainer: {
-    marginTop: "40px",
+    marginTop: "20px",
     border: "1px solid #e1e1e1",
     borderRadius: "8px",
     padding: "20px",
@@ -246,32 +296,27 @@ const styles = {
     fontSize: "18px",
     marginBottom: "10px",
     fontWeight: "bold",
+    color: "#000",
   },
-  queryInputContainer: {
+  searchContainer: {
     display: "flex",
+    alignItems: "center",
     marginBottom: "20px",
   },
-  queryInput: {
+  searchInputWrapper: {
     flex: 1,
-    padding: "10px",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-    marginRight: "10px",
+    marginRight: "10px", // Ensure space between input and button.
   },
-  queryButton: {
+  searchButton: {
     padding: "10px 20px",
     border: "none",
     borderRadius: "4px",
-    backgroundColor: "#28a745",
+    backgroundColor: "#007bff",
     color: "#fff",
     cursor: "pointer",
   },
-  resultsContainer: {
-    maxHeight: "200px",
-    overflowY: "auto",
-  },
-  noResults: {
-    color: "#999",
+  fileInfo: {
+    color: "#000",
   },
 };
 
