@@ -4,6 +4,100 @@ import ExperienceBar from './ExperienceBar';
 import CartoonyButton from './CartoonyButton';
 import { Link } from 'react-router-dom';
 
+
+const dummyLeaderboard = [
+  { rank: 1, name: 'Alice', score: 2500 },
+  { rank: 2, name: 'Bob', score: 2300 },
+  { rank: 3, name: 'Charlie', score: 2150 },
+  { rank: 4, name: 'Dave', score: 2000 },
+  { rank: 5, name: 'Eve', score: 1900 },
+];
+
+
+const Leaderboard = () => {
+  return (
+    <div style={{
+      backgroundColor: '#fff',
+      borderRadius: '10px',
+      padding: '15px',
+      maxWidth: '350px',
+      margin: '20px auto 0',
+      textAlign: 'center',
+      boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
+    }}>
+      <h3 style={{ color: '#155724', marginBottom: '10px' }}>Leaderboard</h3>
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead>
+          <tr style={{ borderBottom: '2px solid #ddd' }}>
+            <th style={{ textAlign: 'left', padding: '5px' }}>Rank</th>
+            <th style={{ textAlign: 'left', padding: '5px' }}>Name</th>
+            <th style={{ textAlign: 'right', padding: '5px' }}>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {dummyLeaderboard.map((entry) => (
+            <tr key={entry.rank} style={{ borderBottom: '1px solid #ddd' }}>
+              <td style={{ textAlign: 'left', padding: '5px' }}>#{entry.rank}</td>
+              <td style={{ textAlign: 'left', padding: '5px' }}>{entry.name}</td>
+              <td style={{ textAlign: 'right', padding: '5px' }}>{entry.score}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+const Body = () => {
+  const [showSosCard, setShowSosCard] = useState(false);
+
+  return (
+    <>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <ExperienceBar current={350} max={500} level={5} />
+      </div>
+
+      <div className="row" style={{ marginTop: '35px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
+        <CartoonyButton to="/prep" color="rgb(83, 211, 147)" size="large" width="100%">
+          Prep
+        </CartoonyButton>
+        <CartoonyButton to="/help" color="rgb(83, 211, 147)" size="large" width="100%">
+          Help
+        </CartoonyButton>
+        <CartoonyButton onClick={() => setShowSosCard(true)} color="rgb(83, 211, 147)" size="large" width="100%">
+          SOS
+        </CartoonyButton>
+      </div>
+
+      <div className="container center-align" style={{ marginTop: '30px' }}>
+        <div style={{ marginBottom: '20px' }}>
+          <Link to="/achieve">
+            <img
+              src={process.env.PUBLIC_URL + "/images/trophy.webp"}
+              alt="Trophy"
+              style={{
+                display: 'block',
+                margin: '0 auto',
+                maxWidth: '250px',
+                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.5)',
+              }}
+            />
+          </Link>
+        </div>
+
+        <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+          <CartoonyButton to="/research" color="rgb(239, 221, 121)" size="large" width="auto">
+            Bounty
+          </CartoonyButton>
+        </div>
+
+        {/* Leaderboard Component */}
+        <Leaderboard />
+      </div>
+    </>
+  );
+};
+
 // SosSlider Component – Slide from right to left to confirm SOS
 const SosSlider = ({ onConfirm }) => {
   const sliderRef = useRef(null);
