@@ -55,7 +55,6 @@ const ResearchPage = () => {
         style={{
           fontFamily: 'Fantasy, cursive',
           color: 'rgba(77, 203, 70, 0.92)',
-          //textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
         }}
       >
         Bounties
