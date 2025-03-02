@@ -9,7 +9,13 @@ from flask import (
     send_file, 
     abort)
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from flask_login import (
+    LoginManager, 
+    UserMixin, 
+    login_user, 
+    logout_user, 
+    login_required, 
+    current_user)
 from sqlalchemy.orm import backref
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
@@ -25,11 +31,25 @@ API_KEY = os.getenv("API_KEY")
 app = Flask(__name__, template_folder="../frontend")
 CORS(app)
 
+try:
+    os.makedirs(app.instance_path, exist_ok=True)
+except OSError:
+    pass
+
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(app.instance_path, 'users.db')}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = API_KEY
 
 db = SQLAlchemy(app)
+
+def create_db():
+    db_path = os.path.join(app.instance_path, 'users.db')
+    if not os.path.exists(db_path):
+        with app.app_context():
+            db.create_all()
+
+create_db()
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'

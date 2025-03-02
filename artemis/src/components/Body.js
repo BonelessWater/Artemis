@@ -20,6 +20,22 @@ const SosSlider = ({ onConfirm }) => {
     }
   }, []);
 
+  const updatePosition = (clientX) => {
+    if (sliderRef.current && handleRef.current) {
+      const sliderWidth = sliderRef.current.offsetWidth;
+      const handleWidth = handleRef.current.offsetWidth;
+      const dx = clientX - startX;
+      setHandleLeft((prev) => {
+        let newLeft = (prev !== null ? prev + dx : 0);
+        if (newLeft < 0) newLeft = 0;
+        if (newLeft > sliderWidth - handleWidth) newLeft = sliderWidth - handleWidth;
+        return newLeft;
+      });
+      setStartX(clientX);
+    }
+  };
+
+  // Mouse handlers
   const onMouseDown = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -31,18 +47,7 @@ const SosSlider = ({ onConfirm }) => {
     if (!dragging) return;
     e.stopPropagation();
     e.preventDefault();
-    if (sliderRef.current && handleRef.current) {
-      const sliderWidth = sliderRef.current.offsetWidth;
-      const handleWidth = handleRef.current.offsetWidth;
-      const dx = e.clientX - startX;
-      setHandleLeft((prev) => {
-        let newLeft = (prev !== null ? prev + dx : 0);
-        if (newLeft < 0) newLeft = 0;
-        if (newLeft > sliderWidth - handleWidth) newLeft = sliderWidth - handleWidth;
-        return newLeft;
-      });
-      setStartX(e.clientX);
-    }
+    updatePosition(e.clientX);
   };
 
   const onMouseUp = (e) => {
@@ -50,11 +55,42 @@ const SosSlider = ({ onConfirm }) => {
     e.stopPropagation();
     e.preventDefault();
     setDragging(false);
-    // If the handle has been dragged far enough left (e.g., less than 20px), confirm SOS
     if (handleLeft !== null && handleLeft < 20) {
       if (onConfirm) onConfirm();
     } else {
-      // Reset the handle to the right side
+      // Reset handle to right side
+      if (sliderRef.current && handleRef.current) {
+        const sliderWidth = sliderRef.current.offsetWidth;
+        const handleWidth = handleRef.current.offsetWidth;
+        setHandleLeft(sliderWidth - handleWidth);
+      }
+    }
+  };
+
+  // Touch handlers
+  const onTouchStart = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setDragging(true);
+    setStartX(e.touches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    if (!dragging) return;
+    e.stopPropagation();
+    e.preventDefault();
+    updatePosition(e.touches[0].clientX);
+  };
+
+  const onTouchEnd = (e) => {
+    if (!dragging) return;
+    e.stopPropagation();
+    e.preventDefault();
+    setDragging(false);
+    if (handleLeft !== null && handleLeft < 20) {
+      if (onConfirm) onConfirm();
+    } else {
+      // Reset handle to right side
       if (sliderRef.current && handleRef.current) {
         const sliderWidth = sliderRef.current.offsetWidth;
         const handleWidth = handleRef.current.offsetWidth;
@@ -77,18 +113,21 @@ const SosSlider = ({ onConfirm }) => {
       }}
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
-      onMouseLeave={onMouseUp} // Reset if mouse leaves slider area
+      onMouseLeave={onMouseUp}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
     >
       <div
         ref={handleRef}
         onMouseDown={onMouseDown}
+        onTouchStart={onTouchStart}
         style={{
           position: 'absolute',
           left: handleLeft,
           top: 0,
           bottom: 0,
           width: '80px',
-          background: '#CFA575',
+          background: 'rgb(83, 211, 147)',
           borderRadius: '25px',
           display: 'flex',
           alignItems: 'center',
@@ -99,6 +138,84 @@ const SosSlider = ({ onConfirm }) => {
       >
         SOS
       </div>
+    </div>
+  );
+};
+
+const DraggableCard = ({ children, onClose }) => {
+  const cardRef = useRef(null);
+  const [dragging, setDragging] = useState(false);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+
+  // Center card on initial render
+  useEffect(() => {
+    if (cardRef.current) {
+      const cardWidth = cardRef.current.offsetWidth;
+      const cardHeight = cardRef.current.offsetHeight;
+      setPos({
+        x: window.innerWidth / 2 - cardWidth / 2,
+        y: window.innerHeight / 2 - cardHeight / 2,
+      });
+    }
+  }, []);
+
+  const onMouseDown = (e) => {
+    setDragging(true);
+    setOffset({
+      x: e.clientX - pos.x,
+      y: e.clientY - pos.y,
+    });
+  };
+
+  const onMouseMove = (e) => {
+    if (!dragging) return;
+    setPos({
+      x: e.clientX - offset.x,
+      y: e.clientY - offset.y,
+    });
+  };
+
+  const onMouseUp = () => {
+    setDragging(false);
+  };
+
+  useEffect(() => {
+    if (dragging) {
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+    } else {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    }
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+  }, [dragging]);
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseDown={onMouseDown}
+      style={{
+        position: 'absolute',
+        left: pos.x,
+        top: pos.y,
+        cursor: dragging ? 'grabbing' : 'grab',
+        width: '90%',
+        maxWidth: '400px',
+        backgroundColor: '#d4edda',
+        border: '1px solid #c3e6cb',
+        borderRadius: '10px',
+        padding: '10px',
+        zIndex: 1000, // ensure it appears on top
+      }}
+    >
+      {children}
+      <CartoonyButton onClick={onClose} color="rgb(239, 221, 121)" size="medium" width="auto">
+        Close
+      </CartoonyButton>
     </div>
   );
 };
@@ -189,53 +306,62 @@ const Body = () => {
         
         {/* Three buttons next to each other */}
         <div className="row" style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-          <div className="col s4">
-            <CartoonyButton to="/help" color="rgb(83, 211, 147)" size="large" width="100%">
-              Help
-              <img
-                src="/images/star-white.png"
-                alt="Icon"
-                style={{
-                  position: 'absolute',
-                  top: '-3px',
-                  right: '-3px',
-                  width: '20px',
-                  height: '20px'
-                }}
-              />
-            </CartoonyButton>
-          </div>
-          <div className="col s4">
-            {/* Unused button placeholder */}
-          </div>
-          <div className="col s4">
-            <CartoonyButton
-              onClick={() => setShowSosCard(true)}
-              color="rgb(83, 211, 147)"
-              size="large"
-              width="100%"
-              height="50px"
-            >
-              SOS
-            </CartoonyButton>
-          </div>
+        <div className="col s5">
+          <CartoonyButton to="/help" color="rgb(83, 211, 147)" size="large" width="100%">
+            Help
+            <img
+              src="/images/star-white.png"
+              alt="Icon"
+              style={{
+                position: 'absolute',
+                top: '-3px',
+                right: '-3px',
+                width: '20px',
+                height: '20px'
+              }}
+            />
+          </CartoonyButton>
         </div>
+        <div className="col s2">
+          {/* Unused button placeholder */}
+        </div>
+        <div className="col s5">
+          <CartoonyButton
+            onClick={() => setShowSosCard(true)}
+            color="rgb(83, 211, 147)"
+            size="large"
+            width="100%"
+          >
+            SOS
+            <img
+              src="/images/star-white.png"
+              alt="Icon"
+              style={{
+                position: 'absolute',
+                top: '-3px',
+                right: '-3px',
+                width: '20px',
+                height: '20px'
+              }}
+            />
+          </CartoonyButton>
+        </div>
+      </div>
+
 
         {/* Conditionally render the SOS confirmation card */}
         {showSosCard && (
-          <div className="card" style={{ margin: '20px auto', width: '90%', maxWidth: '400px' }}>
+          <DraggableCard onClose={() => setShowSosCard(false)}>
             <div className="card-content">
-              <span className="card-title">Confirm SOS</span>
-              <p>Slide the button to confirm SOS.</p>
+              <span className="card-title" style={{ color: '#155724', fontWeight: 'bold' }}>
+                911
+              </span>
+              <p style={{ color: '#155724' }}>Slide the button to call 911.</p>
               <SosSlider onConfirm={handleSosConfirm} />
             </div>
-            <div className="card-action">
-              <button className="btn red" onClick={() => setShowSosCard(false)}>
-                Cancel
-              </button>
-            </div>
-          </div>
+          </DraggableCard>
         )}
+
       </div>
     </>
   );
