@@ -1,6 +1,6 @@
 // src/Body.js
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import ExperienceBar  from './ExperienceBar';
 
 // SosSlider Component – Slide from right to left to confirm SOS
 const SosSlider = ({ onConfirm }) => {
@@ -113,46 +113,81 @@ const Body = () => {
   };
 
   return (
-    <div className="container center-align" style={{ marginTop: '30px' }}>
-      {/* Three buttons next to each other */}
-      <div className="row" style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-        <div className="col s4">
-          <button className="btn-large" style={{ backgroundColor: '#83CC6D', width: '100%' }}>
-            Help
-          </button>
+    <>
+      <ExperienceBar current={350} max={500} level={5} />
+      <div className="container center-align" style={{ marginTop: '30px' }}>
+        {/* Trophy Image Above the Buttons */}
+        <div style={{ marginBottom: '20px' }}>
+          <img
+            src={process.env.PUBLIC_URL + "/images/trophy.webp"}
+            alt="Trophy"
+            style={{ 
+              display: 'block', 
+              margin: '0 auto', 
+              maxWidth: '250px',
+              boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.5)'
+            }}
+          />
         </div>
-        <div className="col s4">
-          <button className="btn-large" style={{ backgroundColor: '#83CC6D', width: '100%' }}>
-            Prep
-          </button>
-        </div>
-        <div className="col s4">
-          <button
-            className="btn-large"
-            style={{ backgroundColor: '#83CC6D', width: '100%' }}
-            onClick={() => setShowSosCard(true)}
-          >
-            SOS
-          </button>
-        </div>
-      </div>
-
-      {/* Conditionally render the SOS confirmation card */}
-      {showSosCard && (
-        <div className="card" style={{ margin: '20px auto', width: '90%', maxWidth: '400px' }}>
-          <div className="card-content">
-            <span className="card-title">Confirm SOS</span>
-            <p>Slide the button to confirm SOS.</p>
-            <SosSlider onConfirm={handleSosConfirm} />
+        
+        {/* Three buttons next to each other */}
+        <div className="row" style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+          <div className="col s4">
+            <button
+              className="btn-large"
+              style={{ 
+                backgroundColor: 'rgb(83, 211, 147)', 
+                width: '100%',
+                fontSize: '35px'
+              }}
+            >
+              Help
+            </button>
           </div>
-          <div className="card-action">
-            <button className="btn red" onClick={() => setShowSosCard(false)}>
-              Cancel
+          <div className="col s4">
+            <button 
+              className="btn-large" 
+              style={{ 
+                backgroundColor: 'rgb(83, 211, 147)', 
+                width: '100%',
+                fontSize: '35px'
+              }}
+            >
+              Prep
+            </button>
+          </div>
+          <div className="col s4">
+            <button
+              className="btn-large"
+              style={{ 
+                backgroundColor: 'rgb(83, 211, 147)', 
+                width: '100%',
+                fontSize: '35px'
+              }}
+              onClick={() => setShowSosCard(true)}
+            >
+              SOS
             </button>
           </div>
         </div>
-      )}
-    </div>
+
+        {/* Conditionally render the SOS confirmation card */}
+        {showSosCard && (
+          <div className="card" style={{ margin: '20px auto', width: '90%', maxWidth: '400px' }}>
+            <div className="card-content">
+              <span className="card-title">Confirm SOS</span>
+              <p>Slide the button to confirm SOS.</p>
+              <SosSlider onConfirm={handleSosConfirm} />
+            </div>
+            <div className="card-action">
+              <button className="btn red" onClick={() => setShowSosCard(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

@@ -7,6 +7,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin-top: -30px !important;
 }
 
 code {
@@ -142,4 +143,31 @@ li.slider-item.active {
     background-color: #83CC6D;
     border-color: #000000;
     box-shadow: 1px 2px 3px #0000009e !important;
+}
+
+@font-face {
+    font-family: 'PartyConfetti';
+    src: url('../public/fonts/PartyConfetti.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}  
+
+body {
+    margin: 0;
+    font-family: 'PartyConfetti', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Apply your font to everything */
+* {
+    font-family: 'PartyConfetti', sans-serif !important;
+    -webkit-text-stroke: 1.5px black; /* 1px black outline */
+    color: white; /* The fill color of the text */
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
