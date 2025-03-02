@@ -113,8 +113,12 @@ const Body = () => {
   };
 
   return (
-    <>
-      <ExperienceBar current={350} max={500} level={5} />
+    <>  
+      <div class="col s12">
+        <div class="col s8">
+          <ExperienceBar current={350} max={500} level={5} />
+        </div>
+      </div>
       <div className="container center-align" style={{ marginTop: '30px' }}>
         {/* Trophy Image Above the Buttons */}
         <div style={{ marginBottom: '20px' }}>
