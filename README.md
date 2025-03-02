@@ -20,9 +20,7 @@ Artemis is a revolutionary mobile application designed by hikers, for hikers. Bu
     - [Install Frontend Dependencies](#install-frontend-dependencies)
     - [Running the Development Servers](#running-the-development-servers)
 5. [Usage](#usage)
-6. [Troubleshooting](#troubleshooting)
-7. [Contribution Guidelines](#contribution-guidelines)
-8. [Summary](#summary)
+6. [Contributing](#contributing)
 
 ---
 
