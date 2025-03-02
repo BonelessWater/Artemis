@@ -9,13 +9,8 @@ from flask import (
     send_file, 
     abort)
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import (
-    LoginManager, 
-    UserMixin, 
-    login_user, 
-    logout_user, 
-    login_required, 
-    current_user)
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from sqlalchemy.orm import backref
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 from flask_cors import CORS
@@ -44,10 +39,20 @@ friendship = db.Table('friendship',
     db.Column('friend_id', db.Integer, db.ForeignKey('user.id', primary_key=True))
 )
 
+achieved = db.Table('achieved',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id', primary_key=True)),
+    db.Column('achievement_id', db.Integer, db.ForeignKey('achievement.id', primary_key=True))
+)
+
 class User(UserMixin, db.Model):
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
+    email = db.Column(db.String(300), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)  # Make sure this line exists!
+
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
 
     friends = db.relationship(
         'User', 
@@ -57,6 +62,28 @@ class User(UserMixin, db.Model):
         backref='friend_users', 
         lazy='dynamic'
     )
+
+    user_achievements = db.relationship(
+        'Achievement',
+        secondary=achieved,
+        backref=db.backref('users', lazy='dynamic'),
+        lazy='dynamic'
+    )
+
+class Researcher(UserMixin, db.Model):
+    __tablename__ = 'researcher'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    email = db.Column(db.String(300), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)  # Make sure this line exists!
+
+class Achievement(db.Model):
+    __tablename__ = 'achievement'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), unique=True, nullable=False)
+    desc = db.Column(db.String(300), unique=True, nullable=False)
+    level = db.Column(db.Integer, nullable=False)
+
 
 def create_db():
     db_path = os.path.join(app.instance_path, 'users.db')
@@ -68,9 +95,7 @@ create_db()
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
-    # Query all users from the database
     users = User.query.all()
-    # Create a list of usernames to return in the response
     usernames = [user.username for user in users]
     return jsonify({"users": usernames})
 
@@ -81,16 +106,24 @@ def load_user(user_id):
 @app.route('/register', methods=['POST'])
 def register():
     username = request.form['username']
+    email = request.form['email']
     password = generate_password_hash(request.form['password'])
+    user_type = request.form['user_type']
 
     if User.query.filter_by(username=username).first():
         return jsonify({"error": "Username already exists!"}), 400
 
-    new_user = User(username=username, password=password)
+    if user_type == 'special':
+        if not email.endswith('.edu') or email.endswith('.gov'):
+            return jsonify({'message': "Invalid email; must end in .edu or .gov."})
+        new_user = Researcher(username=username, email=email, password=password)
+    else:
+        new_user = User(username=username, email=email, password=password)
+
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify({"message": "User registered successfully!"}), 201
+    return jsonify({"message": "Registered successfully!"}), 201
 
 
 @app.route('/login', methods=['POST'])
@@ -102,6 +135,11 @@ def login():
     if user and check_password_hash(user.password, password):
         login_user(user)
         return jsonify({"message": "Login successful!"}), 200
+    else:
+        researcher = Researcher.query.filter_by(username=username).first()
+        if researcher and check_password_hash(researcher.password, password):
+            login_user(researcher)
+            return jsonify({"message": "Login successful!"}), 200
 
     return jsonify({"error": "Invalid credentials"}), 401
 
@@ -126,7 +164,13 @@ def friends():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return jsonify({"message": f"Hello {current_user.username}!"})
+    if isinstance(current_user, User):
+        return jsonify({"message": f"Hello User: {current_user.username}!"})
+    elif isinstance(current_user, Researcher):
+        return jsonify({"message": f"Hello Researcher {current_user.username}!"})
+    else:
+        return jsonify({"message": "Unexpected Error: You are logged in as nothing?"})
+    
 
 @app.route('/logout')
 @login_required

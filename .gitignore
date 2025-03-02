@@ -4,5 +4,7 @@ venv
 __pycache__
 node_modules
 
+backend/instance/
+
 # Model
 DeepSeek-R1-Distill-Qwen-1.5B

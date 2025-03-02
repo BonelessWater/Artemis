@@ -5,18 +5,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Body from './components/Body';
 import ResearchPage from './components/ResearchPage';
 import HelpPage from './components/HelpPage';
+import AcheivementPage from './components/AchievementPage';
 
 const SettingsPage = () => (
   <div className="container" style={{ marginTop: '30px' }}>
     <h3>Settings</h3>
     <p>Settings page content goes here.</p>
-  </div>
-);
-
-const AcheivementPage = () => (
-  <div className="container" style={{ marginTop: '30px' }}>
-    <h3>This is where achievements go</h3>
-    <p>achievements page content goes here.</p>
   </div>
 );
 
