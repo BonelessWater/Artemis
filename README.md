@@ -74,8 +74,9 @@ node --version
 npm --version
 ```
 
+---
 
-###Setup Python Virtual Environment
+### Setup Python Virtual Environment
 It’s recommended to create a virtual environment to isolate dependencies.
 
 Create a virtual environment:
@@ -83,35 +84,86 @@ Create a virtual environment:
 python -m venv venv
 ```
 
-###Activate the virtual environment:
 Windows:
 
 ```bash
+python -m venv venv
 venv\Scripts\activate
 ```
 macOS/Linux:
 ```bash
+python3 -m venv venv
 source venv/bin/activate
 ```
 Verify the virtual environment is active.
 You should see (venv) at the beginning of your terminal prompt.
 
-# Install Backend Dependencies
+---                                                                                                                              
+### Install Backend Dependencies
 
 With the virtual environment activated, install the required Python packages.
-
-### Create a `requirements.txt` file if it doesn't exist. Add the required packages:
-
-```makefile
-requirements.txt
-Flask==2.3.2
-flask_cors
-python_dotenv
-openai
-```
 
 Install dependencies using pip:
 ```bash
 pip install -r requirements.txt
 ```
 
+---
+
+### Install Frontend Dependencies
+
+Switch to the frontend directory (named artemis) and install the Node.js dependencies:
+
+```bash
+cd ../artemis
+npm install
+npm fund
+```
+
+---
+
+### Running the Development Servers
+
+Start both the frontend and backend servers in separate terminal windows. 
+
+```bash
+cd artemis
+npm start
+```
+
+```bash
+cd ../backend
+python app.py
+```
+
+---
+
+## Usage
+
+Once the servers are running, Artemis is ready to accompany you on your hikes. Explore features such as:
+
+- Browsing survival manuals and research articles.
+- Playing nature mini games.
+- Tracking friends on the trail.
+- Activating SOS in case of emergencies.
+- Creating and managing personalized hiking checklists.
+- Collaborating with researchers by collecting environmental samples
+
+---
+
+## Troubleshooting
+
+- Virtual Environment: Ensure the virtual environment is activated before installing dependencies.
+- Dependency Issues: Confirm that you are using the correct versions of Python, Node.js, and npm.
+- Server Problems: Check that both servers are running on the designated ports Review terminal output for error messages.
+
+For additional help, refer to our Contributing section or open an issue in the repository.
+
+## Contributing
+
+We welcome contributions from the community. To get involved:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Commit your changes with clear, descriptive messages.
+4. Submit a pull request detailing your modifications.
