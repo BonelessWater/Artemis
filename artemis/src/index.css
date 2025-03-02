@@ -162,7 +162,6 @@ body {
 /* Apply your font to everything */
 * {
     font-family: 'PartyConfetti', sans-serif !important;
-    -webkit-text-stroke: 0.03em black; /* 1px black outline */
     color: white; /* The fill color of the text */
 }
 
@@ -171,3 +170,27 @@ html, body {
     padding: 0;
     height: 100%;
 }
+
+/* Materialize Button with Cartoony Shine Effect */
+.btn {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 0;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.8);
+    transform: rotate(45deg);
+    transition: width 0.3s ease-in-out;
+    pointer-events: none;
+  }
+  
+  .btn:hover::before {
+    width: 200%;
+  }
+  
