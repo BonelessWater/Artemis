@@ -245,6 +245,74 @@ def get_file():
 def prep():
     pass
         
+def seed_database():
+    with app.app_context():
+        db.create_all()  # Ensure tables exist
+
+        # Check if Dom already exists
+        if User.query.filter_by(username="Dom").first():
+            print("Database already seeded. Skipping.")
+            return
+        
+        # Create Users including Dom
+        users_data = [
+            {"username": "Alice", "email": "alice@example.com", "points": 500},
+            {"username": "Bob", "email": "bob@example.com", "points": 450},
+            {"username": "Charlie", "email": "charlie@example.com", "points": 400},
+            {"username": "David", "email": "david@example.com", "points": 350},
+            {"username": "Eve", "email": "eve@example.com", "points": 300},
+            {"username": "Dom", "email": "dom@example.com", "points": 600},  # Added Dom
+        ]
+
+        users = []
+        for user_data in users_data:
+            user = User(
+                username=user_data["username"],
+                email=user_data["email"],
+                password=generate_password_hash("password"),  # Default password
+                points=user_data["points"]
+            )
+            users.append(user)
+
+        # Add users to the database
+        db.session.add_all(users)
+        db.session.commit()
+
+        # Create a mapping for quick access
+        user_dict = {user.username: user for user in User.query.all()}
+
+        # Add Friendships (Bidirectional)
+        friendships = [
+            ("Alice", "Bob"),
+            ("Alice", "Charlie"),
+            ("Bob", "David"),
+            ("Charlie", "Eve"),
+            ("David", "Eve"),
+            
+            # Dom's 5 Friends
+            ("Dom", "Alice"),
+            ("Dom", "Bob"),
+            ("Dom", "Charlie"),
+            ("Dom", "David"),
+            ("Dom", "Eve"),
+        ]
+
+        for user1_name, user2_name in friendships:
+            user1 = user_dict.get(user1_name)
+            user2 = user_dict.get(user2_name)
+
+            if user1 and user2:
+                if not user1.is_friend(user2):  # Avoid duplicate friendships
+                    user1.friends.append(user2)
+                if not user2.is_friend(user1):  # Ensure bidirectional friendship
+                    user2.friends.append(user1)
+
+        db.session.commit()
+        print("Database seeded successfully with users and friendships.")
+
 if __name__ == '__main__':
+    # Call the seed function
+    seed_database()
+
     app.run(host='0.0.0.0', port=5000, debug=True)
 
