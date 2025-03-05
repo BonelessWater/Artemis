@@ -106,11 +106,11 @@ class Achievement(db.Model):
     level = db.Column(db.Integer, nullable=False)
 
 # Initialize login manager
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
+#login_manager = LoginManager()
+#login_manager.init_app(app)
+#login_manager.login_view = 'login'
 
-@login_manager.user_loader
+#@login_manager.user_loader
 def load_user(user_id):
     # Try to load a User first; if not found, you might extend this logic
     return User.query.get(int(user_id))
@@ -166,7 +166,7 @@ def register():
 
     return jsonify({"message": "Registered successfully!"}), 201
 
-@app.route('/login', methods=['POST'])
+#@app.route('/login', methods=['POST'])
 def login():
     username = request.json.get('username')
     password = request.json.get('password')
@@ -184,7 +184,7 @@ def login():
     return jsonify({"error": "Invalid credentials"}), 401
 
 @app.route('/friends', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def friends():
     if request.method == 'POST':
         friend_username = request.form['friend_username']
@@ -201,7 +201,7 @@ def friends():
     return render_template('friends.html', friends=friends_list)
 
 @app.route('/dashboard')
-@login_required
+#@login_required
 def dashboard():
     if isinstance(current_user, User):
         return jsonify({"message": f"Hello User: {current_user.username}!"})
